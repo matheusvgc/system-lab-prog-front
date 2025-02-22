@@ -1,7 +1,6 @@
 import { Input } from "@/components/ui/input"
 import { useState } from "react";
 import { FiShoppingCart, FiMenu, FiX, FiSearch } from "react-icons/fi";
-import DropDownMenu from "./homePageComponents/DropDownMenu";
 import { Link } from "react-router-dom";
 
 export default function Header () {
