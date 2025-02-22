@@ -1,3 +1,4 @@
+import CategoriesMenu from "@/components/categoriesMenu";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import DropDownMenu from "@/components/homePageComponents/DropDownMenu"
@@ -90,6 +91,7 @@ export default function HomePage() {
     return (
         <>
         <Header/>
+        <CategoriesMenu />
         <div className="bg-gray-100 pb-10">
             <h1 className="text-center text-4xl p-10">Nossos produtos</h1>
             <ul className="flex flex-row justify-center gap-10">
