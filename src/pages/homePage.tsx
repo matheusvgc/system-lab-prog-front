@@ -1,3 +1,4 @@
+import Header from "@/components/header";
 import DropDownMenu from "@/components/homePageComponents/DropDownMenu"
 import { useState } from "react"
 
@@ -86,6 +87,8 @@ export default function HomePage() {
     }
 
     return (
+        <>
+        <Header/>
         <div className="bg-gray-100 pb-10">
             <h1 className="text-center text-4xl p-10">Nossos produtos</h1>
             <ul className="flex flex-row justify-center gap-10">
@@ -120,5 +123,6 @@ export default function HomePage() {
                 
             </div>
         </div>
+        </>
     )
 }
