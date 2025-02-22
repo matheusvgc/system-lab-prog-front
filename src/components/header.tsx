@@ -1,7 +1,8 @@
 import { Input } from "@/components/ui/input"
 import { useState } from "react";
 import { FiShoppingCart, FiMenu, FiX, FiSearch } from "react-icons/fi";
-import CategoriesMenu from "./categoriesMenu";
+import DropDownMenu from "./homePageComponents/DropDownMenu";
+import { Link } from "react-router-dom";
 
 export default function Header () {
 
@@ -29,14 +30,18 @@ export default function Header () {
 
                 <nav className="hidden md:block text-nowrap">
                     <ul className="flex gap-10 items-center">
-                    <li>
+                    <li className="relative cursor-pointer group">
                         <a href="/">Faça login ou<br/> cadastre-se</a>
+                        <ul className="absolute p-2 top-30% left-0 w-[200px] bg-white rounded-md shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
+                            <li className="py-2 text-black"><Link to="/login">Login</Link></li>
+                            <li className="py-2 text-black"><Link to="/signup">Cadastro</Link></li>
+                        </ul>
                     </li>
                     <li>
                         <a href="/">Produtos</a>
                     </li>
                     <li>
-                        <a href="/">
+                        <a href="/cartPage">
                             <FiShoppingCart className="hidden md:block" size={28}/>
                         </a>
                     </li>
