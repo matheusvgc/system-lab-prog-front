@@ -1,3 +1,4 @@
+import Footer from "@/components/footer";
 import Header from "@/components/header";
 import DropDownMenu from "@/components/homePageComponents/DropDownMenu"
 import { useState } from "react"
@@ -123,6 +124,7 @@ export default function HomePage() {
                 
             </div>
         </div>
+        <Footer/>
         </>
     )
 }
