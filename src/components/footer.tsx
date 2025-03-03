@@ -1,7 +1,7 @@
 
 export default function Footer() {
     return (
-        <footer className="flex justify-center gap-20 bg-black text-white p-8 text-center text-xl">
+        <footer className="flex flex-col justify-center gap-20 bg-black text-white p-8 text-center text-xl">
             <div>
                 TECH SHOP &copy; 2022
             </div>

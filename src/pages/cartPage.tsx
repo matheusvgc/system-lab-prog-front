@@ -1,7 +1,6 @@
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 
-import phoneImage from "../../public/product image.png";
 import { useState } from "react";
 import BaseButton from "@/components/ui/BaseButton";
 
@@ -10,37 +9,37 @@ const _products = [
         productId: "1",
         productName: "Fone de ouvido",
         price: 110.90,
-        image: phoneImage,
+        image: "../../product image.png",
     },
     {
         productId: "2",
         productName: "Fone de ouvido",
         price: 110.90,
-        image: phoneImage,
+        image: "../../product image.png",
     },
     {
         productId: "3",
         productName: "Fone de ouvido",
         price: 110.90,
-        image: phoneImage,
+        image: "../../product image.png",
     },
     {
         productId: "4",
         productName: "Fone de ouvido",
         price: 110.90,
-        image: phoneImage,
+        image: "../../product image.png",
     },
     {
         productId: "5",
         productName: "Fone de ouvido",
         price: 110.90,
-        image: phoneImage,
+        image: "../../product image.png",
     },
     {
         productId: "6",
         productName: "Fone de ouvido",
         price: 110.90,
-        image: phoneImage,
+        image: "../../product image.png",
     }
 ]
 

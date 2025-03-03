@@ -98,3 +98,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+@theme {
+  --breakpoint-xsm: 520px;
+}

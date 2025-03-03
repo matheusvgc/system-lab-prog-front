@@ -2,7 +2,7 @@ import CategoriesMenu from "@/components/categoriesMenu";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import ChangePageButton from "@/components/homePageComponents/ChangePageButton";
-import DropDownMenu from "@/components/homePageComponents/DropDownMenu"
+// import DropDownMenu from "@/components/homePageComponents/DropDownMenu"
 import ProductCard from "@/components/homePageComponents/ProductCard";
 import { useEffect, useState } from "react"
 
@@ -163,33 +163,33 @@ export default function HomePage() {
         setProducts(_products.slice((_page - 1) * 12, _page * 12));
     }
 
-    function filterProductsByCategory(value: string) {
-        setProducts(_products.filter(product => product.category === value));
-    }
+    // function filterProductsByCategory(value: string) {
+    //     setProducts(_products.filter(product => product.category === value));
+    // }
 
-    function sortProducts(value: string) {
-        const sortedProducts = [...products];
+    // function sortProducts(value: string) {
+    //     const sortedProducts = [...products];
 
-        if (value === "greaterPrice") {
-            sortedProducts.sort((a, b) => b.price - a.price);
-        } else if (value === "lowerPrice") {
-            sortedProducts.sort((a, b) => a.price - b.price);
-        } else if (value === "ascAlphabetical"){
-            sortedProducts.sort((a, b) => a.productName.localeCompare(b.productName));
-        } else if (value === "descAlphabetical") {
-            sortedProducts.sort((a, b) => b.productName.localeCompare(a.productName));
-        }
+    //     if (value === "greaterPrice") {
+    //         sortedProducts.sort((a, b) => b.price - a.price);
+    //     } else if (value === "lowerPrice") {
+    //         sortedProducts.sort((a, b) => a.price - b.price);
+    //     } else if (value === "ascAlphabetical"){
+    //         sortedProducts.sort((a, b) => a.productName.localeCompare(b.productName));
+    //     } else if (value === "descAlphabetical") {
+    //         sortedProducts.sort((a, b) => b.productName.localeCompare(a.productName));
+    //     }
 
-        setProducts(sortedProducts);
-    }
+    //     setProducts(sortedProducts);
+    // }
 
     return (
         <>
         <Header/>
         <CategoriesMenu />
-        <div className="bg-gray-100 pb-10">
-            <h1 className="text-center text-4xl p-10">Nossos produtos</h1>
-            <ul className="flex flex-row justify-center gap-10">
+        <div className="w-full bg-gray-100 pb-10 flex flex-col justify-center items-center">
+            <h1 className="text-center text-4xl p-8">Nossos produtos</h1>
+            {/* <ul className="flex flex-row justify-center gap-10">
                 <DropDownMenu title={"Categorias"}>
                     <li className="py-2 hover:text-gray-500" onClick={() => setProducts(_products.slice(0, 10))}>Todos</li>
                     <li className="py-2 hover:text-gray-500" onClick={() => filterProductsByCategory("headphones")}>Fone de ouvido</li>
@@ -206,9 +206,9 @@ export default function HomePage() {
                     <li className="py-2 hover:text-gray-500" onClick={() => sortProducts("ascAlphabetical")}>Alfabetico Ascendente</li>
                     <li className="py-2 hover:text-gray-500" onClick={() => sortProducts("descAlphabetical")}>Alfabetico Descendente</li>
                 </DropDownMenu>
-            </ul>
+            </ul> */}
 
-            <div className="w-7xl mx-auto my-10 p-10 grid grid-cols-4 gap-10">
+            <div className="w-full max-w-7xl px-8 grid grid-cols-1 xsm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-10 gap-x-4">
                 {products.map(product => (
                     <ProductCard key={product.productId} product={product}/>
                 ))}
