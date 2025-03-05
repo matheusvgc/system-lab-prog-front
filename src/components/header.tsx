@@ -32,7 +32,7 @@ export default function Header () {
                         <ul className="flex gap-10 items-center">
                         <li className="relative cursor-pointer group">
                             <a href="/">Faça login ou<br/> cadastre-se</a>
-                            <ul className="absolute p-2 top-30% left-0 w-[200px] bg-white rounded-md shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
+                            <ul className="absolute p-2 top-30% left-0 w-[200px] bg-white rounded-md shadow-md hidden group-hover:block transition-opacity">
                                 <li className="py-2 text-black"><Link to="/login">Login</Link></li>
                                 <li className="py-2 text-black"><Link to="/signup">Cadastro</Link></li>
                             </ul>

@@ -2,186 +2,78 @@ import CategoriesMenu from "@/components/categoriesMenu";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import ChangePageButton from "@/components/homePageComponents/ChangePageButton";
-// import DropDownMenu from "@/components/homePageComponents/DropDownMenu"
+import DropDownMenu from "@/components/homePageComponents/DropDownMenu";
 import ProductCard from "@/components/homePageComponents/ProductCard";
+import { ICategory } from "@/dataInterfaces/ICategory";
+import { IProduct } from "@/dataInterfaces/IProduct";
+import api from "@/services/api";
 import { useEffect, useState } from "react"
 
-interface Iproduct {
-    productId: string;
-    productName: string;
-    price: number;
-    image: string;
-    description: string;
-    category: string;
-}
-
-const _products = [
-    {
-        productId: "1",
-        productName: "a Nome do produto",
-        price: 99.99,
-        image: "../../product image.png",
-        description: "Descrição do produto",
-        category: "headphones"
-    },
-    {
-        productId: "2",
-        productName: "b Nome do produto",
-        price: 98.99,
-        image: "../../product image.png",
-        description: "Descrição do produto",
-        category: "headphones"
-    },
-    {
-        productId: "3",
-        productName: "c Nome do produto",
-        price: 97.99,
-        image: "../../product image.png",
-        description: "Descrição do produto",
-        category: "headphones"
-    },
-    {
-        productId: "4",
-        productName: "d Nome do produto",
-        price: 96.99,
-        image: "../../smartphone.jpg",
-        description: "Descrição do produto",
-        category: "smartphones"
-    },
-    {
-        productId: "5",
-        productName: "e Nome do produto",
-        price: 95.99,
-        image: "../../smartphone.jpg",
-        description: "Descrição do produto",
-        category: "smartphones"
-    },
-    {
-        productId: "6",
-        productName: "f Nome do produto",
-        price: 93.99,
-        image: "../../smartphone.jpg",
-        description: "Descrição do produto",
-        category: "smartphones"
-    },
-    {
-        productId: "7",
-        productName: "g Nome do produto",
-        price: 99.99,
-        image: "../../product image.png",
-        description: "Descrição do produto",
-        category: "headphones"
-    },
-    {
-        productId: "8",
-        productName: "h Nome do produto",
-        price: 98.99,
-        image: "../../product image.png",
-        description: "Descrição do produto",
-        category: "headphones"
-    },
-    {
-        productId: "9",
-        productName: "i Nome do produto",
-        price: 97.99,
-        image: "../../product image.png",
-        description: "Descrição do produto",
-        category: "headphones"
-    },
-    {
-        productId: "10",
-        productName: "j Nome do produto",
-        price: 96.99,
-        image: "../../smartphone.jpg",
-        description: "Descrição do produto",
-        category: "smartphones"
-    },
-    {
-        productId: "11",
-        productName: "k Nome do produto",
-        price: 95.99,
-        image: "../../smartphone.jpg",
-        description: "Descrição do produto",
-        category: "smartphones"
-    },
-    {
-        productId: "12",
-        productName: "l Nome do produto",
-        price: 93.99,
-        image: "../../smartphone.jpg",
-        description: "Descrição do produto",
-        category: "smartphones"
-    },
-    {
-        productId: "13",
-        productName: "m Nome do produto",
-        price: 97.99,
-        image: "../../product image.png",
-        description: "Descrição do produto",
-        category: "headphones"
-    },
-    {
-        productId: "14",
-        productName: "n Nome do produto",
-        price: 96.99,
-        image: "../../smartphone.jpg",
-        description: "Descrição do produto",
-        category: "smartphones"
-    },
-    {
-        productId: "15",
-        productName: "o Nome do produto",
-        price: 95.99,
-        image: "../../smartphone.jpg",
-        description: "Descrição do produto",
-        category: "smartphones"
-    },
-    {
-        productId: "16",
-        productName: "p Nome do produto",
-        price: 93.99,
-        image: "../../smartphone.jpg",
-        description: "Descrição do produto",
-        category: "smartphones"
-    },
-]
 
 export default function HomePage() {
 
-    const [products, setProducts] = useState<Iproduct[]>(_products);
-    const [page, setPage] = useState(1);
+    const [products, setProducts] = useState<IProduct[]>([]);
+    const [categories, setCategories] = useState<ICategory[]>([]);
+    const itemsPerPage = 12;
+    
+    const [currentPage, setCurrentPage] = useState(1);
     const [numberOfPages, setNumberOfPages] = useState(0);
+    const [currentProducts, setCurrentProducts] = useState<IProduct[]>([]);
 
     useEffect(() => {
-        setProducts(_products.slice(12 * (page - 1), 12 * page));
-        setNumberOfPages(Math.ceil(_products.length / 12));
+        fetchProducts();
+        fetchCategories();
     }, []);
 
-    function changePage(_page: number) {
-        if (_page > numberOfPages || _page <= 0) return;
-        setPage(_page);
-        setProducts(_products.slice((_page - 1) * 12, _page * 12));
+    async function fetchProducts() {
+        try {
+            const response = await api.get("/productSku");
+            const products = response.data;
+
+            setNumberOfPages(Math.ceil(products.length / itemsPerPage));
+            setProducts(products);
+            setCurrentProducts(products.slice(0, itemsPerPage));
+        } catch (error) {
+            console.error(error);
+        }
     }
 
-    // function filterProductsByCategory(value: string) {
-    //     setProducts(_products.filter(product => product.category === value));
-    // }
+    async function fetchCategories() {
+        try {
+            const response = await api.get("/categories");
+            const categories = response.data;
+            setCategories(categories);
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
-    // function sortProducts(value: string) {
-    //     const sortedProducts = [...products];
+    function changePage(page: number) {
+        if (page > numberOfPages || page <= 0) return;
+        
+        setCurrentPage(page);
+        setCurrentProducts(products.slice((page - 1) * itemsPerPage, page * itemsPerPage));
+    }
 
-    //     if (value === "greaterPrice") {
-    //         sortedProducts.sort((a, b) => b.price - a.price);
-    //     } else if (value === "lowerPrice") {
-    //         sortedProducts.sort((a, b) => a.price - b.price);
-    //     } else if (value === "ascAlphabetical"){
-    //         sortedProducts.sort((a, b) => a.productName.localeCompare(b.productName));
-    //     } else if (value === "descAlphabetical") {
-    //         sortedProducts.sort((a, b) => b.productName.localeCompare(a.productName));
-    //     }
+    function filterProductsByCategory(value: string) {
+        setCurrentProducts(products.filter(product => product.product.category.categoryName === value));
+    }
 
-    //     setProducts(sortedProducts);
-    // }
+    function sortProducts(value: string) {
+        const sortedProducts = [...currentProducts];
+
+        if (value === "greaterPrice") {
+            sortedProducts.sort((a, b) => b.price - a.price);
+        } else if (value === "lowerPrice") {
+            sortedProducts.sort((a, b) => a.price - b.price);
+        } else if (value === "ascAlphabetical") {
+            sortedProducts.sort((a, b) => a.product.productName.localeCompare(b.product.productName));
+        } else if (value === "descAlphabetical") {
+            sortedProducts.sort((a, b) => b.product.productName.localeCompare(a.product.productName));
+        }
+
+        setCurrentProducts(sortedProducts);
+    }
 
     return (
         <>
@@ -189,11 +81,14 @@ export default function HomePage() {
         <CategoriesMenu />
         <div className="w-full bg-gray-100 pb-10 flex flex-col justify-center items-center">
             <h1 className="text-center text-4xl p-8">Nossos produtos</h1>
-            {/* <ul className="flex flex-row justify-center gap-10">
+            <ul className="flex flex-row justify-center gap-10">
                 <DropDownMenu title={"Categorias"}>
-                    <li className="py-2 hover:text-gray-500" onClick={() => setProducts(_products.slice(0, 10))}>Todos</li>
-                    <li className="py-2 hover:text-gray-500" onClick={() => filterProductsByCategory("headphones")}>Fone de ouvido</li>
-                    <li className="py-2 hover:text-gray-500" onClick={() => filterProductsByCategory("smartphones")}>Smartphone</li>
+                    <li className="py-2 hover:text-gray-500" onClick={() => setCurrentProducts(products.slice(0, itemsPerPage))}>Todos</li>
+                    {categories.map((category) => (
+                        <li key={category.categoryId} className="py-2 hover:text-gray-500" onClick={() => filterProductsByCategory(category.categoryName)}>
+                            {category.categoryName}
+                        </li>
+                    ))}
                 </DropDownMenu>
                 <DropDownMenu title="Marcas">
                     <li className="py-2 hover:text-gray-500">Todos</li>
@@ -206,20 +101,20 @@ export default function HomePage() {
                     <li className="py-2 hover:text-gray-500" onClick={() => sortProducts("ascAlphabetical")}>Alfabetico Ascendente</li>
                     <li className="py-2 hover:text-gray-500" onClick={() => sortProducts("descAlphabetical")}>Alfabetico Descendente</li>
                 </DropDownMenu>
-            </ul> */}
+            </ul>
 
-            <div className="w-full max-w-7xl px-8 grid grid-cols-1 xsm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-10 gap-x-4">
-                {products.map(product => (
+            <div className="w-full my-2 max-w-7xl px-8 grid grid-cols-1 xsm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-10 gap-x-4">
+                {currentProducts.map(product => (
                     <ProductCard key={product.productId} product={product}/>
                 ))}
             </div>
 
             <div className="flex justify-center gap-2">
-                <ChangePageButton icon="<-" changePage={() => changePage(page - 1)}/>
+                <ChangePageButton icon="<-" changePage={() => changePage(currentPage - 1)}/>
                 {Array.from({ length: numberOfPages }).map((_, index) => (
-                    <ChangePageButton icon={(index + 1).toString()} changePage={() => changePage(index + 1)}/>
+                    <ChangePageButton key={index} icon={(index + 1).toString()} changePage={() => changePage(index + 1)}/>
                 ))}
-                <ChangePageButton icon="->" changePage={() => changePage(page + 1)}/>
+                <ChangePageButton icon="->" changePage={() => changePage(currentPage + 1)}/>
             </div>
         </div>
         <Footer/>
