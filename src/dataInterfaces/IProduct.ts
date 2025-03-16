@@ -1,7 +1,8 @@
 import { ICategory } from "./ICategory";
+import { IReview } from "./IReview";
 
 export interface IProduct {
-    productId: string;
+    productSkuId: string;
     product: {
         productId: string;
         productName: string;
@@ -11,6 +12,7 @@ export interface IProduct {
         manufacturer: string;
         brandName: string;
         category: ICategory;
+        reviews: IReview[];
     }
     price: number;
     image: string;

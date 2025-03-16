@@ -1,12 +1,32 @@
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import EvaluationCard from "@/components/productComponents/EvaluationCard";
-import EvaluationStars from "@/components/productComponents/EvaluationStars";
+// import EvaluationStars from "@/components/productComponents/EvaluationStars";
 import SpecificationTable from "@/components/productComponents/SpecificationTable";
 import BaseButton from "@/components/ui/BaseButton";
+import { IProduct } from "@/dataInterfaces/IProduct";
+import { IReview } from "@/dataInterfaces/IReview";
+import api from "@/services/api";
+import { useEffect, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
 
 export default function Product() {
 
+    const { productId } = useParams();
+    const [product, setProduct] = useState<IProduct>();
+
+    useEffect(() => {
+        fetchProduct();
+    }, []);
+
+    async function fetchProduct() {
+        try {
+            const response = await api.get("/productSku/" + productId);
+            setProduct(response.data);
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
     return (
         <>
@@ -15,16 +35,16 @@ export default function Product() {
                 <section className="flex flex-row items-center justify-center gap-16 pt-8">
                     <img src="smartphone.jpg" alt="" width={150} />
                     <div className="flex flex-col gap-4">
-                        <p>Iphone 14 Pro Max</p>
-                        <EvaluationStars />
-                        <p>R$5.999,00</p>
+                        <p>{product?.product.productName}</p>
+                        <p>R$ {(product?.price / 100).toFixed(2)}</p>
+                        {/* <EvaluationStars /> */}
                         <p>Quantidade</p>
                         <BaseButton>Adicionar ao Carrinho</BaseButton>
                     </div>
                 </section>
                 <section className="flex flex-col gap-8">
                     <h1 className="text-center text-xl">Descrição do Produto</h1>
-                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente molestias sit qui mollitia. Aperiam est commodi nulla iure officia iusto dolores rerum, in quisquam delectus, obcaecati illo ipsum earum optio. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi ipsa animi reiciendis corporis obcaecati impedit distinctio eveniet reprehenderit, nobis accusamus voluptates deleniti velit voluptatem ducimus repudiandae dolorem? Consequuntur, cupiditate. Expedita!</p>
+                    <p>{product?.product.productDescription}</p>
 
                 </section>
                 <section className="flex flex-col gap-8">
@@ -36,9 +56,9 @@ export default function Product() {
                 </section>
                 <section className="flex flex-col gap-8 pb-8">
                     <h1 className="text-center text-xl">Avaliações</h1>
-                    <EvaluationCard />
-                    <EvaluationCard />
-                    <EvaluationCard />
+                    {product?.product.reviews.map((productReview: IReview) => (
+                        <EvaluationCard key={productReview.reviewId} review={productReview} />
+                    ))}
                 </section>
             </main>
             <Footer />

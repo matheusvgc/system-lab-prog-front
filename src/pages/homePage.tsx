@@ -105,7 +105,7 @@ export default function HomePage() {
 
                 <div className="w-full my-2 max-w-7xl px-8 grid grid-cols-1 xsm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-10 gap-x-4">
                     {currentProducts.map(product => (
-                        <ProductCard key={product.productId} product={product} />
+                        <ProductCard key={product.productSkuId} product={product} />
                     ))}
                 </div>
 

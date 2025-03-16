@@ -10,8 +10,7 @@ import useAuth from "@/hooks/useAuth";
 export default function Header() {
 
     const [menuOpen, setMenuOpen] = useState(false);
-    const { authenticated, handleLogOut, userType, user, loading } = useAuth()
-    console.log('usertype', userType)
+    const { authenticated, handleLogOut, userType, user, loading } = useAuth();
 
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);

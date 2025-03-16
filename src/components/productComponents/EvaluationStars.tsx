@@ -2,8 +2,11 @@
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 
+interface Props {
+    numStars: number;
+}
 
-export default function EvaluationStars() {
+export default function EvaluationStars({ numStars }: Props) {
     // const [value, setValue] = React.useState(4);
 
     return (
@@ -21,7 +24,7 @@ export default function EvaluationStars() {
                 }}
             /> */}
             {/* <Typography component="legend">Read only</Typography> */}
-            <Rating name="read-only" value={4} readOnly />
+            <Rating name="read-only" value={numStars} readOnly />
             {/* <Typography component="legend">Disabled</Typography>
             <Rating name="disabled" value={value} disabled />
             <Typography component="legend">No rating given</Typography>
