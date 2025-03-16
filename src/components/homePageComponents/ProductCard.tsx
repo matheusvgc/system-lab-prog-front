@@ -1,4 +1,5 @@
 import { IProduct } from "@/dataInterfaces/IProduct";
+import { formatPrice } from "@/utils/formatPrice";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
@@ -19,7 +20,7 @@ export default function ProductCard({product}: Props) {
             <h2 className="text-xl min-h-2">{product.product?.productName || "undefined"}</h2>
             <div className="flex flex-col justify-around min-h-22">
                 <p>{product.product?.summary || "undefined"}</p>
-                <p>Preço: R$ {(product.price / 100).toFixed(2) || "undefined"}</p>
+                <p>Preço: R$ {formatPrice(product.price) || "undefined"}</p>
             </div>
             <button className="mx-auto px-4 py-2 bg-gray-500 rounded-lg text-white cursor-pointer hover:bg-gray-400 hover:text-gray-100">Adicionar ao carrinho</button>
         </div>

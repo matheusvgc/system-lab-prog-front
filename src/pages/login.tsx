@@ -11,8 +11,7 @@ interface LoginData {
 
 export default function Login() {
 
-    const { authenticated, handleLogin } = useAuth()
-    console.log('auth', authenticated)
+    const { handleLogin } = useAuth()
     const [loginData, setLoginData] = useState<LoginData>({
         username: "",
         password: "",

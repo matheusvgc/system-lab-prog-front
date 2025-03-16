@@ -6,12 +6,15 @@ import SpecificationTable from "@/components/productComponents/SpecificationTabl
 import BaseButton from "@/components/ui/BaseButton";
 import { IProduct } from "@/dataInterfaces/IProduct";
 import { IReview } from "@/dataInterfaces/IReview";
+import useAuth from "@/hooks/useAuth";
 import api from "@/services/api";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 
 export default function Product() {
 
+    const { user } = useAuth();
+    
     const { productId } = useParams();
     const [product, setProduct] = useState<IProduct>();
 
@@ -28,6 +31,18 @@ export default function Product() {
         }
     }
 
+    async function addToCard() {
+        try {
+            const response = await api.post("/carts/addItemToCart/" + user.cart.cartId, {
+                productSkuId: productId,
+                quantity: 1
+            });
+
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     return (
         <>
             <Header />
@@ -39,7 +54,7 @@ export default function Product() {
                         <p>R$ {(product?.price / 100).toFixed(2)}</p>
                         {/* <EvaluationStars /> */}
                         <p>Quantidade</p>
-                        <BaseButton>Adicionar ao Carrinho</BaseButton>
+                        <BaseButton onClick={addToCard}>Adicionar ao Carrinho</BaseButton>
                     </div>
                 </section>
                 <section className="flex flex-col gap-8">
