@@ -32,7 +32,7 @@ export interface UserProps {
 
 export default function useAuth() {
 	const [authenticated, setAuthenticated] = useState(false);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [userType, setUserType] = useState("");
 	const [user, setUser] = useState<UserProps>({} as UserProps);
 	const navigate = useNavigate();
@@ -43,7 +43,9 @@ export default function useAuth() {
 	useEffect(() => {
 		const token = Cookies.get("token");
 		if (token) {
+			api.defaults.headers.Authorization = `Bearer ${token}`;
 			const decodedToken = jwtDecode<DecodedToken>(token);
+
 			api
 				.get(`user/byUsername/${decodedToken?.sub}`)
 				.then((response) => {
@@ -91,9 +93,13 @@ export default function useAuth() {
 				})
 				.catch(() => {
 					handleLogOut();
+				})
+				.finally(() => {
+					setLoading(false);
 				});
+		} else {
+			setLoading(false);
 		}
-		setLoading(false);
 	}, []);
 
 	async function handleLogin({ username, password }: SignInCredentials) {
@@ -102,13 +108,12 @@ export default function useAuth() {
 				username,
 				password,
 			});
-			const token = data?.token;
-			const decodedToken = jwtDecode<DecodedToken>(token);
-			const user = await api.get(`user/byUsername/${decodedToken?.sub}`);
+			Cookies.set("token", data?.token);
+			api.defaults.headers.Authorization = `Bearer ${data?.token}`;
+			const user = await api.get(`user/byUsername/${username}`);
 			setUser(user?.data);
 			setAuthenticated(true);
 			setUserType(data?.role);
-			Cookies.set("token", data?.token);
 			handleRedirectToHomePage();
 		} catch (error) {
 			console.error(error);

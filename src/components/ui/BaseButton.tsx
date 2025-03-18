@@ -1,3 +1,4 @@
+import { CircularProgress } from "@mui/material";
 import clsx from "clsx";
 
 interface ButtonProps {
@@ -6,11 +7,13 @@ interface ButtonProps {
     bgColor?: string;
     textColor?: string;
     hoverColor?: string;
+    loading?: boolean
 }
 
 export default function BaseButton({
     children,
     onClick,
+    loading,
     bgColor = "bg-gray-600",
     textColor = "text-white",
     hoverColor = "hover:bg-gray-700",
@@ -25,8 +28,9 @@ export default function BaseButton({
                 textColor,
                 "font-bold py-2 px-4 rounded cursor-pointer text-sm transition duration-300"
             )}
+            disabled={loading}
         >
-            {children}
+            {loading ? <CircularProgress size={20} color="inherit" /> : children}
         </button>
     );
 }

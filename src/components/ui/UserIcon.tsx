@@ -9,14 +9,8 @@ interface UserIconProps {
 }
 
 const UserIcon: React.FC<UserIconProps> = ({ name, imageUrl, loading }) => {
+    console.log('loading in component', loading)
 
-    if (loading) {
-        return (
-            <CircularProgress
-                size={20}
-            />
-        )
-    }
 
     return (
         <div className="flex items-center space-x-2">
