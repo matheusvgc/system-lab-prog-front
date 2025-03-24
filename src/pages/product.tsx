@@ -1,4 +1,3 @@
-import Footer from "@/components/footer";
 import Header from "@/components/header";
 import EvaluationCard from "@/components/productComponents/EvaluationCard";
 // import EvaluationStars from "@/components/productComponents/EvaluationStars";
@@ -11,9 +10,8 @@ import useAuth from "@/hooks/useAuth";
 import api from "@/services/api";
 import { getErrorMessage } from "@/utils/errorHandler";
 import { CircularProgress } from "@mui/material";
-import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export default function Product() {
 
@@ -71,7 +69,7 @@ export default function Product() {
                         <img src="smartphone.jpg" alt="" width={150} />
                         <div className="flex flex-col gap-4">
                             <p>{product?.product.productName}</p>
-                            <p>R$ {(product?.price / 100).toFixed(2)}</p>
+                            {product?.price && <p>R$ {(product?.price / 100).toFixed(2)}</p>}
                             {/* <EvaluationStars /> */}
                             <p>Quantidade</p>
                             <BaseButton loading={loadingAddCart} onClick={addToCard}>Adicionar ao Carrinho</BaseButton>
@@ -97,7 +95,6 @@ export default function Product() {
                         </section></>}
 
             </main>
-            <Footer />
         </>
     )
 }

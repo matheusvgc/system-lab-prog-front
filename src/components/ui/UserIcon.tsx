@@ -1,18 +1,10 @@
-
-import { CircularProgress } from "@mui/material";
-import { Context } from "@/context/authContext";
-import { useContext } from "react";
 interface UserIconProps {
     name: string; // Nome do usuário
     imageUrl?: string; // URL da imagem de perfil (opcional)
     loading: boolean
 }
 
-const UserIcon: React.FC<UserIconProps> = ({ name, imageUrl, loading }) => {
-    console.log('loading in component', loading)
-
-
-    return (
+const UserIcon: React.FC<UserIconProps> = ({ name, imageUrl, loading }) => {return (
         <div className="flex items-center space-x-2">
             {imageUrl ? (
                 <img

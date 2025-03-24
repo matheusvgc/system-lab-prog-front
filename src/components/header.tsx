@@ -11,7 +11,6 @@ export default function Header() {
 
     const [menuOpen, setMenuOpen] = useState(false);
     const { authenticated, handleLogOut, userType, user, loading } = useAuth();
-    console.log('loading', loading, authenticated)
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     }
@@ -39,14 +38,6 @@ export default function Header() {
                         />
                         : <nav className="hidden md:block text-nowrap">
                             <ul className="flex gap-10 items-center">
-                                {!authenticated ? <li className="relative cursor-pointer group">
-                                    <a href="/">Faça login ou<br /> cadastre-se</a>
-                                    <ul className="absolute p-2 top-30% left-0 w-[200px] bg-white rounded-md shadow-md hidden group-hover:block transition-opacity">
-                                        <li className="py-2 text-black"><Link to="/login">Login</Link></li>
-                                        <li className="py-2 text-black"><Link to="/signup">Cadastro</Link></li>
-                                    </ul>
-                                </li> : <Stack direction={'row'} alignItems={'center'} gap={5}><UserIcon name={user.username} loading={loading} />  <button type="button" className="cursor-pointer" onClick={() => handleLogOut()}>Sair</button> </Stack>}
-
                                 <li>
                                     <a href="/">Produtos</a>
                                 </li>
@@ -55,6 +46,14 @@ export default function Header() {
                                         <FiShoppingCart className="hidden md:block" size={28} />
                                     </a>
                                 </li> : null}
+                                {!authenticated ? <li className="relative cursor-pointer group">
+                                    <a onClick={(e) => e.preventDefault()} href="/">Faça login ou<br /> cadastre-se</a>
+                                    <ul className="absolute p-2 top-30% left-0 w-[200px] bg-white rounded-md shadow-md hidden group-hover:block transition-opacity">
+                                        <li className="py-2 text-black"><Link to="/login">Login</Link></li>
+                                        <li className="py-2 text-black"><Link to="/signup">Cadastro</Link></li>
+                                    </ul>
+                                </li> : <Stack direction={'row'} alignItems={'center'} gap={5}><UserIcon name={user.username} loading={loading} />  <button type="button" className="cursor-pointer" onClick={() => handleLogOut()}>Sair</button> </Stack>}
+
 
                             </ul>
                         </nav>}
