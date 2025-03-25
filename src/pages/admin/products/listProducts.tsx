@@ -33,14 +33,25 @@ export default function ListProducts() {
             console.error(error);
         }
     }
-
+    
     const handleEdit = (productId: string) => {
         navigate("/editProduct/" + productId)
     };
 
-    const handleDelete = async (productId: string) => {
+    async function handleDelete (productId: string) {
         if (!confirm("Tem certeza que deseja excluir este produto?")) return;
-        console.log("Deletar produto:", productId);
+        
+        try {
+            const response = await api.delete(`product/${productId}`);
+            if (response.status === 204) {
+                alert("Produto deletado!");
+                fetchProducts();
+            } else {
+                alert("Erro ao excluir o produto!");
+            }
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (
