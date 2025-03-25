@@ -15,7 +15,7 @@ export interface IProduct {
         reviews: IReview[];
     }
     price: number;
-    image: string;
+    productImage: string;
     description: string;
     category: ICategory;
 }

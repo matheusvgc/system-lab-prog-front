@@ -9,14 +9,13 @@ interface Props {
 export default function ProductCard({product}: Props) {
     
     const navigate = useNavigate();
-
     function toProduct() {
         navigate("/product/" + product.productSkuId);
     }
 
     return (
         <div onClick={toProduct} className="justify-self-center max-w-[250px] flex flex-col gap-2 p-4 cursor-pointer rounded-lg border-1 hover:bg-gray-300 text-center">
-            <img className="w-[200px] h-[200px] rounded-lg mx-auto" src="../../product image.png" alt="Imagem do produto" />
+            <img className="w-[200px] h-[200px] rounded-lg mx-auto" src={product.productImage} alt="Imagem do produto" />
             <h2 className="text-xl min-h-2">{product.product?.productName || "undefined"}</h2>
             <div className="flex flex-col justify-around min-h-22">
                 <p>{product.product?.summary || "undefined"}</p>
