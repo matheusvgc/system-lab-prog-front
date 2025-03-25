@@ -40,7 +40,6 @@ export default function Login() {
                     <button type="submit">Fazer login</button>
                 </div>
             </form>
-            <Footer />
         </>
     )
 }

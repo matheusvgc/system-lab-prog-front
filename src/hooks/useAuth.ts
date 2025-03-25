@@ -125,6 +125,7 @@ export default function useAuth() {
 			Cookies.remove("token");
 			setAuthenticated(false);
 			handleRedirectToHomePage();
+			window.location.reload();
 		} catch (error) {
 			console.error(error);
 		}

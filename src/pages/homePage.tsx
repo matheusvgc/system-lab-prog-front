@@ -1,5 +1,4 @@
 import CategoriesMenu from "@/components/categoriesMenu";
-import Footer from "@/components/footer";
 import Header from "@/components/header";
 import ChangePageButton from "@/components/homePageComponents/ChangePageButton";
 import DropDownMenu from "@/components/homePageComponents/DropDownMenu";
@@ -123,8 +122,6 @@ export default function HomePage() {
                     </div></>}
 
             </div>
-
-            <Footer />
         </>
     )
 }

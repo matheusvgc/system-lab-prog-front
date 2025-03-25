@@ -1,4 +1,3 @@
-import Footer from "@/components/footer";
 import Header from "@/components/header";
 
 import BaseButton from "@/components/ui/BaseButton";
@@ -84,7 +83,6 @@ export default function CartPage() {
                     </div>
                 </div>
             </div>
-            <Footer />
         </>
     )
 }

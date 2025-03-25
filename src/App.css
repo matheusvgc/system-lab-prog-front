@@ -1,0 +1,7 @@
+.App {
+    min-height: 100dvh;
+    min-width: 100dvw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
