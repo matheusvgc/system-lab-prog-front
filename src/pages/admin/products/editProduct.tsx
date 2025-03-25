@@ -20,7 +20,7 @@ export default function EditProduct () {
             const response = await api.get(`/product/${productId}`);
             setProduct(response.data);
         } catch (error) {
-            console.log(error)
+            console.error(error)
         } finally {
             setLoadingGetProduct(false)
         }

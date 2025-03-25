@@ -37,7 +37,6 @@ export default function ProductForm ( { onSubmit, initialProduct } : ProductForm
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         const response = await onSubmit(product);
-        console.log(response)
     
         if (response && response.message) {
             setMessage(response.message);

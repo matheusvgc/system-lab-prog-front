@@ -21,9 +21,14 @@ import EditProduct from '@/pages/admin/products/editProduct';
 import CreateProductSku from '@/pages/admin/products/createProductSku';
 import EditProductSku from '@/pages/admin/products/editProductSku';
 
-import ManageOrders from '@/pages/admin/order';
+    //categories
 import ManageCategories from '@/pages/admin/categories';
+import CreateCategory from '@/pages/admin/categories/createCategory';
+
+import ManageOrders from '@/pages/admin/order';
 import ManageFinances from '@/pages/admin/finances';
+import ListCategories from '@/pages/admin/categories/listCategories';
+import EditCategory from '@/pages/admin/categories/editCategory';
 
 export const AppRoutes = () => {
 
@@ -55,8 +60,13 @@ export const AppRoutes = () => {
             <Route path='/editProductSku' element={<ProtectedRoute component={EditProductSku} authenticated={authenticated} loading={loading} />} />
 
 
-            <Route path='/manageOrders' element={<ProtectedRoute component={ManageOrders} authenticated={authenticated} loading={loading} />} />
             <Route path='/manageCategories' element={<ProtectedRoute component={ManageCategories} authenticated={authenticated} loading={loading} />} />
+            <Route path='/createCategory' element={<ProtectedRoute component={CreateCategory} authenticated={authenticated} loading={loading} />} />
+            <Route path='/listCategories' element={<ProtectedRoute component={ListCategories} authenticated={authenticated} loading={loading} />} />
+            <Route path='/editCategory/:categoryId' element={<ProtectedRoute component={EditCategory} authenticated={authenticated} loading={loading} />} />
+            
+            
+            <Route path='/manageOrders' element={<ProtectedRoute component={ManageOrders} authenticated={authenticated} loading={loading} />} />
             <Route path='/manageFinances' element={<ProtectedRoute component={ManageFinances} authenticated={authenticated} loading={loading} />} />
             <Route path="/signup" element={<SignUpPage />} />
             <Route path="/product/:productId" element={<Product />} />
