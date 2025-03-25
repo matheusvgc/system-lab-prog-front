@@ -1,12 +1,10 @@
 import CategoriesMenu from "@/components/categoriesMenu";
-import Footer from "@/components/footer";
 import Header from "@/components/header";
 import ChangePageButton from "@/components/homePageComponents/ChangePageButton";
 import DropDownMenu from "@/components/homePageComponents/DropDownMenu";
 import ProductCard from "@/components/homePageComponents/ProductCard";
 import type { ICategory } from "@/dataInterfaces/ICategory";
 import type { IProduct } from "@/dataInterfaces/IProduct";
-import { useLoading } from "@/hooks/useLoading";
 import api from "@/services/api";
 import { CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react"

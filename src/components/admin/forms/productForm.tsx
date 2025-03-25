@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export interface ProductData {
     productName: string;
@@ -9,11 +9,13 @@ export interface ProductData {
 }
 
 interface ProductFormProps {
-    onSubmit: (product: ProductData) => void;
+    onSubmit: (product: ProductData) => Promise<{ success: boolean; message: string }>;
+    initialProduct?: ProductData;
 }
 
-export default function ProductForm ( { onSubmit } : ProductFormProps ) {
+export default function ProductForm ( { onSubmit, initialProduct } : ProductFormProps ) {
 
+    const [ message, setMessage ] = useState<string | null>(null);
     const [ product, setProduct ] = useState<ProductData>({
         productName: "",
         productDescription: "",
@@ -22,22 +24,40 @@ export default function ProductForm ( { onSubmit } : ProductFormProps ) {
         brandName: "",
     })
 
+    useEffect(() => {
+        if (initialProduct) {
+            setProduct(initialProduct);
+        }
+    }, [initialProduct])
+
     function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         setProduct({...product, [e.target.name]: e.target.value,});
     }
 
-    function handleSubmit (e: React.FormEvent) {
+    async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        onSubmit(product);
-
-        setProduct({
-            productName: "",
-            productDescription: "",
-            summary: "",
-            manufacturer: "",
-            brandName: "",
-        });
+        const response = await onSubmit(product);
+        console.log(response)
+    
+        if (response && response.message) {
+            setMessage(response.message);
+        } else {
+            setMessage("Erro desconhecido.");
+        }
+    
+        setTimeout(() => setMessage(null), 3000);
+    
+        if (!initialProduct) {
+            setProduct({
+                productName: "",
+                productDescription: "",
+                summary: "",
+                manufacturer: "",
+                brandName: "",
+            });
+        }
     }
+    
 
     return (
         <form className="flex flex-col justify-center items-center gap-2 w-full max-w-7xl px-4 md:px-10" onSubmit={handleSubmit}>
@@ -80,7 +100,12 @@ export default function ProductForm ( { onSubmit } : ProductFormProps ) {
                 placeholder="Marca"
                 className="border p-2 w-full border-2 rounded-lg border-black placeholder:text-black placeholder:opacity-75 outline-none"
             />
-            <button className="border-2 py-2 px-6 rounded-lg bg-black text-white cursor-pointer">Cadastrar</button>
+            <button className="w-50 border-2 py-2 px-6 rounded-lg bg-black text-white cursor-pointer">{initialProduct? "Salvar" : "Cadastrar"}</button>
+
+            {message && (
+                <p className="text-sm mt-2 text-black-700">{message}</p>
+            )}
+
         </form>
     )
 }
