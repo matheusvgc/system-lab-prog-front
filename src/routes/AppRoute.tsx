@@ -4,9 +4,8 @@ import Product from '@/pages/product';
 import Login from '@/pages/login';
 import SignUpPage from '@/pages/signUp';
 import { Route, Routes, Navigate } from 'react-router-dom';
-
-
-
+import ProfilePage from '@/pages/profilePage';
+import OrdersPage from '@/pages/ordersPage';
 
 export const AppRoutes = () => {
     return (
@@ -17,6 +16,8 @@ export const AppRoutes = () => {
             <Route path="/product/:productId" element={<Product />} />
             <Route path="/login" element={<Login />} />
             <Route path="/cartPage" element={<CartPage />} />
+            <Route path="/customerProfile" element={<ProfilePage />} />
+            <Route path="/ordersPage" element={<OrdersPage />} />
         </Routes>
     );
 };

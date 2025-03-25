@@ -45,7 +45,7 @@ export default function Header() {
                                         <li className="py-2 text-black"><Link to="/login">Login</Link></li>
                                         <li className="py-2 text-black"><Link to="/signup">Cadastro</Link></li>
                                     </ul>
-                                </li> : <Stack direction={'row'} alignItems={'center'} gap={5}><UserIcon name={user.username} loading={loading} />  <button type="button" className="cursor-pointer" onClick={() => handleLogOut()}>Sair</button> </Stack>}
+                                </li> : <Stack direction={'row'} alignItems={'center'} gap={5}><Link to="/customerProfile"><UserIcon name={user.username} loading={loading} /></Link>  <button type="button" className="cursor-pointer" onClick={() => handleLogOut()}>Sair</button> </Stack>}
 
                                 <li>
                                     <a href="/">Produtos</a>
