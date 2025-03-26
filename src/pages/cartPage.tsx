@@ -27,6 +27,14 @@ export default function CartPage() {
         }
     }
 
+    async function doOrder() {
+        try {
+            await api.post(`/orders/${user.userId}`);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
         <>
             <Header />
@@ -48,7 +56,7 @@ export default function CartPage() {
                             </thead>
                             <tbody className="">
                                 <tr key={cartItem.cartItemId}>
-                                    <td><img src={cartItem.image} alt="Fone de ouvido" className="w-20 h-20" /></td>
+                                    <td><img src={cartItem.productSku.productImage} alt="Fone de ouvido" className="w-20 h-20" /></td>
                                     <td className="text-center">{cartItem.productSku.product.productName}</td>
                                     <td className="text-center">
                                         <button type="button" className="p-2">-</button>99<button type="button" className="p-2">+</button>
@@ -78,7 +86,7 @@ export default function CartPage() {
                             <p>Total: R$ {formatPrice(user.cart?.total)}</p>
                         </div>
                         <div className="flex w-xs my-2">
-                            <BaseButton bgColor="bg-green-600" hoverColor="hover:bg-green-700">Finalizar Pedido</BaseButton>
+                            <BaseButton bgColor="bg-green-600" hoverColor="hover:bg-green-700" onClick={doOrder}>Finalizar Pedido</BaseButton>
                         </div>
                     </div>
                 </div>
