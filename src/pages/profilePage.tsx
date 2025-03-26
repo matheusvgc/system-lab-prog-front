@@ -7,6 +7,7 @@ import { CircularProgress } from "@mui/material";
 import {formatDate} from "../utils/formatDate";
 import { formatPrice } from "../utils/formatPrice";
 import api from "@/services/api";
+import BaseButton from "@/components/ui/BaseButton";
 
 export default function ProfilePage() {
 
@@ -79,6 +80,24 @@ export default function ProfilePage() {
         }
     }
 
+    async function deleteAddress(addressId: string) {
+        try {
+            await api.delete(`/addresses/${addressId}`);
+            setAddressForm({
+                country: "",
+                cep: "",
+                city: "",
+                state: "",
+                landmark: "",
+                neighborhood: "",
+                street: "",
+                number: "",
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     function handleAddressFormChange(event: any) {
         setAddressForm({...addressForm, [event.target.name]: event.target.value });
     }
@@ -95,12 +114,7 @@ export default function ProfilePage() {
             <div className="m-4">
                 <div className="flex justify-between">
                     <p className="text-2xl">{user.firstname + " " + user.lastname}</p>
-                    <button 
-                        className="hover:cursor-pointer hover:underline"
-                        onClick={() => setEditingProfile(!editingProfile)}
-                        >Editar perfil
-                        
-                    </button>
+                    <BaseButton onClick={() => setEditingProfile(!editingProfile)}>Editar perfil</BaseButton>
                 </div>
                 {editingProfile && (
                     <div className="m-3 md:mx-20">
@@ -129,20 +143,17 @@ export default function ProfilePage() {
                                 <p>Data: {formatDate(order.createdAt)}</p>
                                 <p>Total: R$ {formatPrice(order.total)}</p>
                             </div>
-                            <Link to={`/order/${order.orderId}`}>Visualizar</Link>
+                            <Link to={`/order/${order.orderId}`}><p className="hover:cursor-pointer hover:underline">Visualizar</p></Link>
                         </div>
                         ))) : (
                             <p className="text-xl text-center">Nenhum pedido cadastrado!</p>
                         )}
-                        <Link to={`/ordersPage`}><p className="text-end">Ver todos</p></Link>
+                        <Link to={`/ordersPage`}><p className="text-end hover:cursor-pointer hover:underline">Ver todos</p></Link>
                 </div>
                 
                 <div className="flex justify-between">
                     <h1 className="text-2xl my-2">Endereços</h1>
-                    <button 
-                        className="hover:cursor-pointer hover:underline"
-                        onClick={() => setCreatingAddress(!creatingAddress)}
-                        >Adicionar endereço</button>
+                    <BaseButton onClick={() => setCreatingAddress(!creatingAddress)}>Adicionar endereço</BaseButton>
                 </div>
                 {creatingAddress && (
                     <div className="m-3 md:mx-20">
@@ -164,14 +175,14 @@ export default function ProfilePage() {
                 )}
 
                 <div>
-                {user.addresses.length > 0 ? (user.addresses.map(addresses => (
-                    <div key={addresses.addressId} className="m-3 md:mx-20 border-b-2 border-primary min-h-20 p-4 gap-4 md:flex md:justify-between">
+                {user.addresses.length > 0 ? (user.addresses.map(address => (
+                    <div key={address.addressId} className="m-3 md:mx-20 border-b-2 border-primary min-h-20 p-4 gap-4 md:flex md:justify-between">
                         <div>
-                            <p>{addresses.street}, {addresses.number}, {addresses.landmark}</p>
-                            <p>{addresses.city}, {addresses.state}</p>
-                            <p>{addresses.cep}</p>
+                            <p>{address.street}, {address.number}, {address.landmark}</p>
+                            <p>{address.city}, {address.state}</p>
+                            <p>{address.cep}</p>
                         </div>
-                        <button>Editar</button>
+                        <BaseButton bgColor="bg-red-500" hoverColor="bg-red-200" onClick={() => deleteAddress(address.addressId)}>Apagar</BaseButton>
                     </div>
                     ))) : (
                         <p className="text-xl text-center">Nenhum endereço cadastrado!</p>
