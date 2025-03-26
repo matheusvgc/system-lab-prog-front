@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import { useAlert } from "./useAlert";
+import { getErrorMessage } from "@/utils/errorHandler";
 
 interface DecodedToken {
 	sub: string;
@@ -35,6 +37,7 @@ export default function useAuth() {
 	const [loading, setLoading] = useState(true);
 	const [userType, setUserType] = useState("");
 	const [user, setUser] = useState<UserProps>({} as UserProps);
+	const { createAlert } = useAlert();
 	const navigate = useNavigate();
 	const handleRedirectToHomePage = () => {
 		navigate("/home");
@@ -115,8 +118,9 @@ export default function useAuth() {
 			setAuthenticated(true);
 			setUserType(data?.role);
 			handleRedirectToHomePage();
-		} catch (error) {
+		} catch (error: any) {
 			console.error(error);
+			createAlert(getErrorMessage("Usuário e/ou senha incorretos"), "info");
 		}
 	}
 
@@ -128,6 +132,7 @@ export default function useAuth() {
 			window.location.reload();
 		} catch (error) {
 			console.error(error);
+			createAlert(getErrorMessage(error), "error");
 		}
 	}
 

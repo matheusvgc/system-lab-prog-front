@@ -6,8 +6,8 @@ interface Props {
     product: IProduct;
 }
 
-export default function ProductCard({product}: Props) {
-    
+export default function ProductCard({ product }: Props) {
+
     const navigate = useNavigate();
     function toProduct() {
         navigate("/product/" + product.productSkuId);
@@ -21,7 +21,7 @@ export default function ProductCard({product}: Props) {
                 <p>{product.product?.summary || "undefined"}</p>
                 <p>Preço: R$ {formatPrice(product.price) || "undefined"}</p>
             </div>
-            <button className="mx-auto px-4 py-2 bg-gray-500 rounded-lg text-white cursor-pointer hover:bg-gray-400 hover:text-gray-100">Adicionar ao carrinho</button>
+            <button className="mx-auto px-4 py-2 bg-gray-500 rounded-lg text-white cursor-pointer hover:bg-gray-400 hover:text-gray-100">Ver Detalhes</button>
         </div>
     )
 }

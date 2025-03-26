@@ -7,8 +7,10 @@ interface ButtonProps {
     bgColor?: string;
     textColor?: string;
     hoverColor?: string;
-    loading?: boolean
+    loading?: boolean,
+    type?: typeButtonProps
 }
+type typeButtonProps = "button" | "submit" | "reset"
 
 export default function BaseButton({
     children,
@@ -17,10 +19,11 @@ export default function BaseButton({
     bgColor = "bg-gray-600",
     textColor = "text-white",
     hoverColor = "hover:bg-gray-700",
+    type
 }: ButtonProps) {
     return (
         <button
-            type="button"
+            type={type || 'button'}
             onClick={onClick}
             className={clsx(
                 bgColor,

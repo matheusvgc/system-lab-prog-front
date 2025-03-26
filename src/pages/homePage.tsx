@@ -5,8 +5,10 @@ import DropDownMenu from "@/components/homePageComponents/DropDownMenu";
 import ProductCard from "@/components/homePageComponents/ProductCard";
 import type { ICategory } from "@/dataInterfaces/ICategory";
 import type { IProduct } from "@/dataInterfaces/IProduct";
+import useAuth from "@/hooks/useAuth";
 import api from "@/services/api";
 import { CircularProgress } from "@mui/material";
+import { userInfo } from "os";
 import { useEffect, useState } from "react"
 
 
@@ -20,10 +22,15 @@ export default function HomePage() {
     const [numberOfPages, setNumberOfPages] = useState(0);
     const [currentProducts, setCurrentProducts] = useState<IProduct[]>([]);
 
+    const { userType } = useAuth()
+
     useEffect(() => {
         fetchProducts();
         fetchCategories();
-    }, []);
+        if (userType === 'ADMIN') {
+            window.location.reload()
+        }
+    }, [userType]);
 
     async function fetchProducts() {
 
