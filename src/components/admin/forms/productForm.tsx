@@ -1,3 +1,4 @@
+import api from "@/services/api";
 import { useEffect, useState } from "react";
 
 export interface ProductData {
@@ -6,6 +7,7 @@ export interface ProductData {
     summary: string;
     manufacturer: string;
     brandName: string;
+    category?: CategoryData;
 }
 
 interface ProductFormProps {
@@ -13,7 +15,16 @@ interface ProductFormProps {
     initialProduct?: ProductData;
 }
 
+interface CategoryData {
+    categoryId: string;
+    categoryName: string;
+    categoryDescription: string;
+}
+
 export default function ProductForm ( { onSubmit, initialProduct } : ProductFormProps ) {
+
+    const [categories, setCategories] = useState<CategoryData[]>([]);
+    const [error, setError] = useState<string | null>(null);
 
     const [ message, setMessage ] = useState<string | null>(null);
     const [ product, setProduct ] = useState<ProductData>({
@@ -22,6 +33,7 @@ export default function ProductForm ( { onSubmit, initialProduct } : ProductForm
         summary: "",
         manufacturer: "",
         brandName: "",
+        category:{categoryId: "", categoryName: "", categoryDescription: ""}
     })
 
     useEffect(() => {
@@ -30,12 +42,36 @@ export default function ProductForm ( { onSubmit, initialProduct } : ProductForm
         }
     }, [initialProduct])
 
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    async function fetchCategories() {
+        try {
+            const response = await api.get("/categories");
+            setCategories(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         setProduct({...product, [e.target.name]: e.target.value,});
     }
 
+    function handleCategoryChange(e: React.ChangeEvent<HTMLSelectElement>) {
+        const selectedCategory = categories.find(cat => cat.categoryId === e.target.value);
+        setProduct({ ...product, category: selectedCategory || { categoryId: "", categoryName: "", categoryDescription: "" } });
+    }
+
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
+
+        if (!product.category) {
+            setError("Selecione uma categoria antes de cadastrar.");
+            return;
+        }
+
         const response = await onSubmit(product);
     
         if (response && response.message) {
@@ -53,6 +89,7 @@ export default function ProductForm ( { onSubmit, initialProduct } : ProductForm
                 summary: "",
                 manufacturer: "",
                 brandName: "",
+                category:{categoryId: "",categoryName:"", categoryDescription: ""}
             });
         }
     }
@@ -61,6 +98,7 @@ export default function ProductForm ( { onSubmit, initialProduct } : ProductForm
     return (
         <form className="flex flex-col justify-center items-center gap-2 w-full max-w-7xl px-4 md:px-10" onSubmit={handleSubmit}>
             <input
+                required
                 type="text"
                 name="productName"
                 value={product.productName}
@@ -69,6 +107,7 @@ export default function ProductForm ( { onSubmit, initialProduct } : ProductForm
                 className="border p-2 w-full border-2 rounded-lg border-black placeholder:text-black placeholder:opacity-75 outline-none"
             />
             <textarea
+                required
                 name="productDescription"
                 value={product.productDescription}
                 onChange={handleChange}
@@ -76,6 +115,7 @@ export default function ProductForm ( { onSubmit, initialProduct } : ProductForm
                 className="border p-2 w-full border-2 rounded-lg border-black placeholder:text-black resize-none placeholder:opacity-75 outline-none"
             />
             <input
+                required
                 type="text"
                 name="summary"
                 value={product.summary}
@@ -84,6 +124,7 @@ export default function ProductForm ( { onSubmit, initialProduct } : ProductForm
                 className="border p-2 w-full border-2 rounded-lg border-black placeholder:text-black placeholder:opacity-75 outline-none"
             />
             <input
+                required
                 type="text"
                 name="manufacturer"
                 value={product.manufacturer}
@@ -92,6 +133,7 @@ export default function ProductForm ( { onSubmit, initialProduct } : ProductForm
                 className="border p-2 w-full border-2 rounded-lg border-black placeholder:text-black placeholder:opacity-75 outline-none"
             />
             <input
+                required
                 type="text"
                 name="brandName"
                 value={product.brandName}
@@ -99,6 +141,18 @@ export default function ProductForm ( { onSubmit, initialProduct } : ProductForm
                 placeholder="Marca"
                 className="border p-2 w-full border-2 rounded-lg border-black placeholder:text-black placeholder:opacity-75 outline-none"
             />
+            <select
+                required
+                name="categoryId"
+                value={product.category?.categoryId}
+                onChange={handleCategoryChange}
+                className="border p-2 w-full border-2 rounded-lg border-black placeholder:text-black placeholder:opacity-75 outline-none"
+            >
+                <option value="">Selecione uma categoria</option>
+                {categories.map((category) => (
+                    <option key={category.categoryId} value={category.categoryId}>{category.categoryName}</option>
+                ))}
+            </select>
             <button className="w-50 border-2 py-2 px-6 rounded-lg bg-black text-white cursor-pointer">{initialProduct? "Salvar" : "Cadastrar"}</button>
 
             {message && (

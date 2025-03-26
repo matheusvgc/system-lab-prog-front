@@ -23,25 +23,9 @@ export default function HomeAdmin () {
                 <BaseButton
                     bgColor="bg-black"
                     hoverColor="bg-black"
-                    onClick={() => navigate("/manageOrders")}
-                >
-                    Gestão de Pedidos
-                </BaseButton>
-
-                <BaseButton
-                    bgColor="bg-black"
-                    hoverColor="bg-black"
                     onClick={() => navigate("/manageCategories")}
                 >
                     Gestão de Categorias
-                </BaseButton>
-
-                <BaseButton
-                    bgColor="bg-black"
-                    hoverColor="bg-black"
-                    onClick={() => navigate("/manageFinances")}
-                >
-                    Gestão Financeira
                 </BaseButton>
             </div>
         </div>

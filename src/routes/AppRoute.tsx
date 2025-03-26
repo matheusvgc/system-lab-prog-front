@@ -18,21 +18,22 @@ import CreateProduct from '@/pages/admin/products/createProduct';
 import ListProducts from '@/pages/admin/products/listProducts';
 import EditProduct from '@/pages/admin/products/editProduct';
 
+    //productSkus
 import CreateProductSku from '@/pages/admin/products/createProductSku';
-import EditProductSku from '@/pages/admin/products/editProductSku';
+import SkuListProducts from '@/pages/admin/products/skuListProducts';
+import EditkuListProducts from '@/pages/admin/products/editSkuListProducts';
+import EditProductSkus from '@/pages/admin/products/editProductSku';
+import EditSku from '@/pages/admin/products/editSku';
 
     //categories
 import ManageCategories from '@/pages/admin/categories';
 import CreateCategory from '@/pages/admin/categories/createCategory';
-
-import ManageOrders from '@/pages/admin/order';
-import ManageFinances from '@/pages/admin/finances';
 import ListCategories from '@/pages/admin/categories/listCategories';
 import EditCategory from '@/pages/admin/categories/editCategory';
+
 import ProfilePage from '@/pages/profilePage';
 import OrdersPage from '@/pages/ordersPage';
 import OrderPage from '@/pages/orderPage';
-import SkuListProducts from '@/pages/admin/products/skuListProducts';
 
 export const AppRoutes = () => {
 
@@ -63,7 +64,9 @@ export const AppRoutes = () => {
 
             <Route path='/skuListProducts' element={<ProtectedRoute component={SkuListProducts} authenticated={authenticated} loading={loading} />} />
             <Route path='/createProductSku/:productId' element={<ProtectedRoute component={CreateProductSku} authenticated={authenticated} loading={loading} />} />
-            <Route path='/editProductSku' element={<ProtectedRoute component={EditProductSku} authenticated={authenticated} loading={loading} />} />
+            <Route path='/editSkuListProducts' element={<ProtectedRoute component={EditkuListProducts} authenticated={authenticated} loading={loading} />} />
+            <Route path='/skusList/:productId' element={<ProtectedRoute component={EditProductSkus} authenticated={authenticated} loading={loading} />} />
+            <Route path='/editSku/:productSkuId' element={<ProtectedRoute component={EditSku} authenticated={authenticated} loading={loading} />} />
 
 
             <Route path='/manageCategories' element={<ProtectedRoute component={ManageCategories} authenticated={authenticated} loading={loading} />} />
@@ -72,8 +75,6 @@ export const AppRoutes = () => {
             <Route path='/editCategory/:categoryId' element={<ProtectedRoute component={EditCategory} authenticated={authenticated} loading={loading} />} />
             
             
-            <Route path='/manageOrders' element={<ProtectedRoute component={ManageOrders} authenticated={authenticated} loading={loading} />} />
-            <Route path='/manageFinances' element={<ProtectedRoute component={ManageFinances} authenticated={authenticated} loading={loading} />} />
             <Route path="/signup" element={<SignUpPage />} />
             <Route path="/product/:productId" element={<Product />} />
             <Route path="/login" element={<Login />} />
