@@ -76,6 +76,16 @@ export default function ProductSkuForm({ onSubmit, initialProductSku }: ProductS
         }
 
         setTimeout(() => setMessage(null), 3000);
+
+        if (response.success) {
+            setProductSku({
+                sku: "",
+                price: 0,
+                stockQuantity: 0,
+                image: null,
+                productImage: "",
+            });
+        }
     }
 
     function formatPrice(price: number): string {
