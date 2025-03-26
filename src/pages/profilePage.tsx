@@ -19,6 +19,8 @@ export default function ProfilePage() {
         lastname: "",
         cpf: "",
         email: "",
+        password: "",
+        confirmPassword: "",
     });
     const [addressForm, setAddressForm] = useState({
         country: "",
@@ -33,12 +35,19 @@ export default function ProfilePage() {
 
     async function editUser() {
 
+        if (userForm.password != null && userForm.password !== userForm.confirmPassword) {
+            alert("Senhas não conferem!");
+            return;
+        }
+
         try {
             await api.put(`/user/${user.userId}`, {
                 firstname: userForm.firstname,
                 lastname: userForm.lastname,
                 cpf: userForm.cpf,
                 email: userForm.email,
+                password: userForm.password,
+                confirmPassword: userForm.confirmPassword,
             });
             setEditingProfile(false);
             setUserForm({
@@ -46,6 +55,8 @@ export default function ProfilePage() {
                 lastname: user.lastname,
                 cpf: user.cpf,
                 email: user.email,
+                password: user.password,
+                confirmPassword: user.password,
             });
         } catch (error) {
             console.error(error);
@@ -123,6 +134,8 @@ export default function ProfilePage() {
                             <input className="border-2 w-full p-2 my-2 rounded-lg" type="text" placeholder="Sobrenome" name="lastname" value={userForm.lastname} onChange={handleUserFormChange}/>
                             <input className="border-2 w-full p-2 my-2 rounded-lg" type="email" placeholder="Email" name="email" value={userForm.email} onChange={handleUserFormChange}/>
                             <input className="border-2 w-full p-2 my-2 rounded-lg" type="text" placeholder="Cpf" name="cpf" value={userForm.cpf} onChange={handleUserFormChange}/>
+                            <input className="border-2 w-full p-2 my-2 rounded-lg" type="password" placeholder="Senha" name="password" value={userForm.password} onChange={handleUserFormChange}/>
+                            <input className="border-2 w-full p-2 my-2 rounded-lg" type="password" placeholder="Confirmar senha" name="confirmPassword" value={userForm.confirmPassword} onChange={handleUserFormChange}/>
 
                         </div>
                         <div className="text-center">
@@ -148,7 +161,8 @@ export default function ProfilePage() {
                         ))) : (
                             <p className="text-xl text-center">Nenhum pedido cadastrado!</p>
                         )}
-                        <Link to={`/ordersPage`}><p className="text-end hover:cursor-pointer hover:underline">Ver todos</p></Link>
+                    {user.orders.length > 0 && <Link to={`/ordersPage`}><p className="text-end hover:cursor-pointer hover:underline">Ver todos</p></Link>}
+                        
                 </div>
                 
                 <div className="flex justify-between">
