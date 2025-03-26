@@ -20,6 +20,38 @@ export default function ProfilePage() {
                 </div>
 
                 <h1 className="text-2xl my-2">Seus Pedidos</h1>
+
+                <div className="mx-3 md:mx-20">
+                    <div className="border-b-2 border-primary min-h-20 p-4 gap-4 md:flex md:justify-between">
+                        <div>
+                            <p>Pedido #order.id</p>
+                            <p>Status: order.status</p>
+                            <p>Data: formatDate(order.createdAt)</p>
+                            <p>Total: R$ order.total</p>
+                        </div>
+                        <button>Visualizar</button>
+                    </div>
+                    <div className="border-b-2 border-primary min-h-20 p-4 gap-4 md:flex md:justify-between">
+                        <div>
+                            <p>Pedido #order.id</p>
+                            <p>Status: order.status</p>
+                            <p>Data: formatDate(order.createdAt)</p>
+                            <p>Total: R$ order.total</p>
+                        </div>
+                        <button>Visualizar</button>
+                    </div>
+                    <div className="border-b-2 border-primary min-h-20 p-4 gap-4 md:flex md:justify-between">
+                        <div>
+                            <p>Pedido #order.id</p>
+                            <p>Status: order.status</p>
+                            <p>Data: formatDate(order.createdAt)</p>
+                            <p>Total: R$ order.total</p>
+                        </div>
+                        <button>Visualizar</button>
+                    </div>
+                    <Link to={`/ordersPage`}><p className="text-end">Ver todos</p></Link>
+                </div>
+
                 {/* <div className="mx-20">
                     {orders && orders?.map((order: any) => (
                         <div key={order.id} className="border-b-2 border-primary min-h-20 p-4 gap-4">
@@ -33,15 +65,35 @@ export default function ProfilePage() {
                     <Link to={`/ordersPage`}><p className="text-end">Ver todos</p></Link>
                 </div> */}
                 
-                {/* <div>
-                    <p>Pedido 1</p>
-                    <p>Status: Pendente</p>
-                    <p>Data: 10/05/2022</p>
-                    <p>Total: R$ 999,99</p>
-                    <button>Visualizar</button>
-                </div> */}
+                
 
                 <h1 className="text-2xl my-2">Endereços</h1>
+                <div className="mx-3 md:mx-20">
+                    <div  className="border-b-2 border-primary min-h-20 p-4 gap-4 md:flex md:justify-between">
+                        <div>
+                            <p>addresses.street, addresses.number, addresses.complement</p>
+                            <p>addresses.city, addresses.state</p>
+                            <p>addresses.cep</p>
+                        </div>
+                        <button>Editar</button>
+                    </div>
+                    <div  className="border-b-2 border-primary min-h-20 p-4 gap-4 md:flex md:justify-between">
+                        <div>
+                            <p>addresses.street, addresses.number, addresses.complement</p>
+                            <p>addresses.city, addresses.state</p>
+                            <p>addresses.cep</p>
+                        </div>
+                        <button>Editar</button>
+                    </div>
+                    <div  className="border-b-2 border-primary min-h-20 p-4 gap-4 md:flex md:justify-between">
+                        <div>
+                            <p>addresses.street, addresses.number, addresses.complement</p>
+                            <p>addresses.city, addresses.state</p>
+                            <p>addresses.cep</p>
+                        </div>
+                        <button>Editar</button>
+                    </div>
+                </div>
                 {/* <div>
                     {user.addresses.map(addresses => (
                         <div key={addresses.id} className="border-b-2 border-primary min-h-20 p-4 gap-4">
@@ -57,7 +109,6 @@ export default function ProfilePage() {
                     <button>Editar</button>
                 </div> */}
             </div>
-            <Footer/>
         </>
     )
 }

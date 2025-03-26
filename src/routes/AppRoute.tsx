@@ -31,6 +31,7 @@ import ListCategories from '@/pages/admin/categories/listCategories';
 import EditCategory from '@/pages/admin/categories/editCategory';
 import ProfilePage from '@/pages/profilePage';
 import OrdersPage from '@/pages/ordersPage';
+import OrderPage from '@/pages/orderPage';
 
 export const AppRoutes = () => {
 
@@ -76,6 +77,7 @@ export const AppRoutes = () => {
             <Route path="/cartPage" element={<CartPage />} />
             <Route path="/customerProfile" element={<ProfilePage />} />
             <Route path="/ordersPage" element={<OrdersPage />} />
+            <Route path="/order" element={<OrderPage/>} />
         </Routes>
     );
 };
