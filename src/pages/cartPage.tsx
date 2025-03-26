@@ -1,15 +1,20 @@
 import Header from "@/components/header";
 
 import BaseButton from "@/components/ui/BaseButton";
+import { useAlert } from "@/hooks/useAlert";
 import useAuth from "@/hooks/useAuth";
 import api from "@/services/api";
+import { getErrorMessage } from "@/utils/errorHandler";
 import { formatPrice } from "@/utils/formatPrice";
+import { useState } from "react";
 
 import { FaTrash } from "react-icons/fa";
 
 export default function CartPage() {
 
     const { user } = useAuth();
+    const { createAlert } = useAlert(); 
+    const [orderLoading, setOrderLoading] = useState(false);
 
     async function handleDelete(cartItemId: string) {
         try {
@@ -28,10 +33,15 @@ export default function CartPage() {
     }
 
     async function doOrder() {
+        setOrderLoading(true);
         try {
             await api.post(`/orders/${user.userId}`);
+            createAlert("Pedido realizado com sucesso!", "success");
         } catch (error) {
-            console.error(error);
+            createAlert(getErrorMessage(error), "error");
+        } finally {
+            setOrderLoading(false);
+            clearCart();
         }
     }
 
@@ -90,7 +100,12 @@ export default function CartPage() {
                             <p>Total: R$ {formatPrice(user.cart?.total)}</p>
                         </div>
                         <div className="flex w-xs my-2">
-                            <BaseButton bgColor="bg-green-600" hoverColor="hover:bg-green-700" onClick={doOrder}>Finalizar Pedido</BaseButton>
+                            <BaseButton 
+                                bgColor="bg-green-600" 
+                                hoverColor="hover:bg-green-700" 
+                                onClick={doOrder}
+                                loading={orderLoading}
+                            >Finalizar Pedido</BaseButton>
                         </div>
                     </div>
                 </div>
