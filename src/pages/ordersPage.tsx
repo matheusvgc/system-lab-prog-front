@@ -25,7 +25,7 @@ export default function OrdersPage() {
                                 <p>Data: {formatDate(order.createdAt)}</p>
                                 <p>Total: R$ {formatPrice(order.total)}</p>
                             </div>
-                            <Link to="/order">Visualizar</Link>
+                            <Link to={`/order/${order.orderId}`}>Visualizar</Link>
                         </div>
                     </div>
                     ))}

@@ -35,7 +35,11 @@ export default function SignUpPage() {
         if (newUser.password !== newUser.confirmPassword) return;
         
         try {
-            const newCustomer = await api.post("/auth/customer/register", newUser);
+            const newCustomer = await api.post("/auth/register", {
+                ...newUser,
+                role: "CUSTOMER",
+                status: "ENABLED"
+            });
             console.log(newCustomer.data);
         } catch (err) {
             console.error(err);

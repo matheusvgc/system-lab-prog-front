@@ -1,15 +1,20 @@
 import Header from "@/components/header";
 
 import BaseButton from "@/components/ui/BaseButton";
+import { useAlert } from "@/hooks/useAlert";
 import useAuth from "@/hooks/useAuth";
 import api from "@/services/api";
+import { getErrorMessage } from "@/utils/errorHandler";
 import { formatPrice } from "@/utils/formatPrice";
+import { useState } from "react";
 
 import { FaTrash } from "react-icons/fa";
 
 export default function CartPage() {
 
     const { user } = useAuth();
+    const { createAlert } = useAlert(); 
+    const [orderLoading, setOrderLoading] = useState(false);
 
     async function handleDelete(cartItemId: string) {
         try {
@@ -28,10 +33,15 @@ export default function CartPage() {
     }
 
     async function doOrder() {
+        setOrderLoading(true);
         try {
             await api.post(`/orders/${user.userId}`);
+            createAlert("Pedido realizado com sucesso!", "success");
         } catch (error) {
-            console.error(error);
+            createAlert(getErrorMessage(error), "error");
+        } finally {
+            setOrderLoading(false);
+            clearCart();
         }
     }
 
@@ -42,20 +52,19 @@ export default function CartPage() {
             <div className="flex justify-center m-5 gap-2">
                 <div>
                     <table className="w-4xl overflow-y-auto min-h-96 max-h-96">
+                        <thead>
+                            <tr>
+                                <th>{null}</th>
+                                <th>Produto</th>
+                                <th>Quantidade</th>
+                                <th>Preço</th>
+                                <th>{null}</th>
+                            </tr>
+                        </thead>
                         {user.cart?.cartItems.length > 0 ? 
                         user.cart?.cartItems.map((cartItem: any) => (
-                            <>
-                            <thead>
+                            <tbody key={cartItem.cartItemId}>
                                 <tr>
-                                    <th>{null}</th>
-                                    <th>Produto</th>
-                                    <th>Quantidade</th>
-                                    <th>Preço</th>
-                                    <th>{null}</th>
-                                </tr>
-                            </thead>
-                            <tbody className="">
-                                <tr key={cartItem.cartItemId}>
                                     <td><img src={cartItem.productSku.productImage} alt="Fone de ouvido" className="w-20 h-20" /></td>
                                     <td className="text-center">{cartItem.productSku.product.productName}</td>
                                     <td className="text-center">
@@ -65,9 +74,14 @@ export default function CartPage() {
                                     <td className="text-center"><BaseButton bgColor="bg-red-700" hoverColor="hover:bg-red-800" onClick={() => handleDelete(cartItem.cartItemId)} >Remover</BaseButton></td>
                                 </tr>
                             </tbody>
-                            </>
                         )) : (
-                            <p className="text-center">O Carrinho está vazio!</p>
+                            <tbody>
+                                <tr>
+                                    <td colSpan={5} className="text-center py-4">
+                                        O Carrinho está vazio!
+                                    </td>
+                                </tr>
+                            </tbody>
                         )}
                     </table>
                     <div className="text-right text-lg pr-12">
@@ -86,7 +100,12 @@ export default function CartPage() {
                             <p>Total: R$ {formatPrice(user.cart?.total)}</p>
                         </div>
                         <div className="flex w-xs my-2">
-                            <BaseButton bgColor="bg-green-600" hoverColor="hover:bg-green-700" onClick={doOrder}>Finalizar Pedido</BaseButton>
+                            <BaseButton 
+                                bgColor="bg-green-600" 
+                                hoverColor="hover:bg-green-700" 
+                                onClick={doOrder}
+                                loading={orderLoading}
+                            >Finalizar Pedido</BaseButton>
                         </div>
                     </div>
                 </div>

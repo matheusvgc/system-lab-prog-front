@@ -10,7 +10,7 @@ import { CircularProgress } from "@mui/material";
 export default function OrderPage() {
 
     const { orderId } = useParams();
-    const [order, setOrder] = useState();
+    const [order, setOrder] = useState<any>();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -20,7 +20,6 @@ export default function OrderPage() {
     async function fetchOrder() {
         try {
             const response = await api.get("/orders/" + orderId);
-            console.log(response.data);
             setOrder(response.data);
             setLoading(false)
         } catch (err) {
@@ -31,18 +30,18 @@ export default function OrderPage() {
     return (
         <>
             <Header/>
-            <div>
+            <div className="m-3 md:m-20">
                 {!loading ? (
                     <>
-                    <h1>Pedido #{order?.orderId}</h1>
+                    <h1 className="text-center text-2xl font-bold">Pedido #{order?.orderId}</h1>
                     <div>
                         <p>Status: {order?.status}</p>
                         <p>Data: {formatDate(order?.createdAt)}</p>
                         <p>Total: R$ {formatPrice(order?.total)}</p>
                     </div>
-                    <h1>Itens</h1>
-                    {order?.orderItems.map(item => (
-                        <div>
+                    <h2 className="text-xl font-bold my-2">Itens</h2>
+                    {order?.orderItems.map((item: any) => (
+                        <div className="border-b-2 border-primary min-h-20 p-4">
                             <p>Produto: {item.productSku.product.productName}</p>
                             <p>Categoria: {item.productSku.product.category}</p>
                             <p>Descrição: {item.productSku.product.productDescription}</p>
