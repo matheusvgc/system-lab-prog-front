@@ -30,7 +30,7 @@ export default function ManageProducts () {
                 <BaseButton
                     bgColor="bg-black"
                     hoverColor="bg-black"
-                    onClick={() => navigate("/createProductSku")}
+                    onClick={() => navigate("/skuListProducts")}
                 >
                     Criar SKU do produto
                 </BaseButton>

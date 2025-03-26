@@ -28,7 +28,7 @@ export default function Button({
     return (
         <button
             className={cn(
-                "rounded-md font-medium transition-all duration-200 flex items-center gap-2",
+                "rounded-md font-medium transition-all duration-200 flex items-center gap-2 cursor-pointer",
                 variants[variant],
                 sizes[size],
                 className

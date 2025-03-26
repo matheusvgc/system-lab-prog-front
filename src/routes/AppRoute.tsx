@@ -32,6 +32,7 @@ import EditCategory from '@/pages/admin/categories/editCategory';
 import ProfilePage from '@/pages/profilePage';
 import OrdersPage from '@/pages/ordersPage';
 import OrderPage from '@/pages/orderPage';
+import SkuListProducts from '@/pages/admin/products/skuListProducts';
 
 export const AppRoutes = () => {
 
@@ -59,7 +60,9 @@ export const AppRoutes = () => {
             <Route path='/createProduct' element={<ProtectedRoute component={CreateProduct} authenticated={authenticated} loading={loading} />} />
             <Route path='/listProducts' element={<ProtectedRoute component={ListProducts} authenticated={authenticated} loading={loading} />} />
             <Route path='/editProduct/:productId' element={<ProtectedRoute component={EditProduct} authenticated={authenticated} loading={loading} />} />
-            <Route path='/createProductSku' element={<ProtectedRoute component={CreateProductSku} authenticated={authenticated} loading={loading} />} />
+
+            <Route path='/skuListProducts' element={<ProtectedRoute component={SkuListProducts} authenticated={authenticated} loading={loading} />} />
+            <Route path='/createProductSku/:productId' element={<ProtectedRoute component={CreateProductSku} authenticated={authenticated} loading={loading} />} />
             <Route path='/editProductSku' element={<ProtectedRoute component={EditProductSku} authenticated={authenticated} loading={loading} />} />
 
 
