@@ -38,7 +38,7 @@ export default function ManageProducts () {
                 <BaseButton
                     bgColor="bg-black"
                     hoverColor="bg-black"
-                    onClick={() => navigate("/editProductSku")}
+                    onClick={() => navigate("/editSkuListProducts")}
                 >
                     Editar SKU do produto
                 </BaseButton>
