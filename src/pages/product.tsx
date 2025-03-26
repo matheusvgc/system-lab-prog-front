@@ -66,7 +66,7 @@ export default function Product() {
                     <div className="flex items-center justify-center h-screen"><CircularProgress size={100} color={'inherit'} /></div>
                     :
                     <><section className="flex flex-row items-center justify-center gap-16 pt-8">
-                        <img src="smartphone.jpg" alt="" width={150} />
+                        <img src={product?.productImage} alt="" width={150} />
                         <div className="flex flex-col gap-4">
                             <p>{product?.product.productName}</p>
                             {product?.price && <p>R$ {(product?.price / 100).toFixed(2)}</p>}

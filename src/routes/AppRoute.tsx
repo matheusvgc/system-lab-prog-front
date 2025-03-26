@@ -80,7 +80,7 @@ export const AppRoutes = () => {
             <Route path="/cartPage" element={<CartPage />} />
             <Route path="/customerProfile" element={<ProfilePage />} />
             <Route path="/ordersPage" element={<OrdersPage />} />
-            <Route path="/order" element={<OrderPage/>} />
+            <Route path="/order/:orderId" element={<OrderPage/>} />
         </Routes>
     );
 };
