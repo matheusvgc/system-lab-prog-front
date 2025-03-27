@@ -43,7 +43,7 @@ export default function OrderPage() {
                     {order?.orderItems.map((item: any) => (
                         <div className="border-b-2 border-primary min-h-20 p-4">
                             <p>Produto: {item.productSku.product.productName}</p>
-                            <p>Categoria: {item.productSku.product.category}</p>
+                            <p>Categoria: {item.productSku.product.category?.categoryName}</p>
                             <p>Descrição: {item.productSku.product.productDescription}</p>
                             <p>Quantitidade: {item.quantity}</p>
                             <p>Preço: R$: {formatPrice(item.productSku.price)}</p>
