@@ -15,17 +15,17 @@ export default function HomeAdmin () {
                 <BaseButton
                     bgColor="bg-black"
                     hoverColor="bg-black"
-                    onClick={() => navigate("/manageProducts")}
+                    onClick={() => navigate("/manageCategories")}
                 >
-                    Gestão de Produtos
+                    Gestão de Categorias
                 </BaseButton>
 
                 <BaseButton
                     bgColor="bg-black"
                     hoverColor="bg-black"
-                    onClick={() => navigate("/manageCategories")}
+                    onClick={() => navigate("/manageProducts")}
                 >
-                    Gestão de Categorias
+                    Gestão de Produtos
                 </BaseButton>
             </div>
         </div>

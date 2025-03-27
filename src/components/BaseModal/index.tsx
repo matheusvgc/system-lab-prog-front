@@ -8,7 +8,7 @@ import BaseButton from '../ui/BaseButton';
 type FormValues = Record<string, any>;
 
 type BaseFormProps = {
-	onSubmit: (fields: FormValues) => Promise<void>;
+	onSubmit: (fields: any) => Promise<void>
 	onClose: () => void;
 	open: boolean;
 	loading: boolean;
