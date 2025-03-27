@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input"
 import { useState } from "react";
 import { FiShoppingCart, FiMenu, FiX, FiSearch } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import UserIcon from "./ui/UserIcon";
 import { CircularProgress, Stack } from "@mui/material";
@@ -9,10 +9,21 @@ import useAuth from "@/hooks/useAuth";
 
 export default function Header() {
 
+    const [searchTerm, setSearchTerm] = useState("");
+    const navigate = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
     const { authenticated, handleLogOut, userType, user, loading } = useAuth();
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
+    }
+
+    function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
+        setSearchTerm(e.target.value);
+    }
+
+    function submitSearch() {
+        if(searchTerm.trim() === "") return;
+        navigate(`/search?query=${encodeURIComponent(searchTerm)}`);
     }
 
     return (
@@ -26,9 +37,20 @@ export default function Header() {
                     </div>
 
                     <div className=" w-full relative">
-                        <Input className="text-black" placeholder="Digite o que deseja..." />
+                        <Input
+                            className="text-black"
+                            placeholder="Digite o que deseja..."
+                            value={searchTerm}
+                            onChange={handleSearch}
+                            onKeyDown={(e) => e.key === "Enter" && submitSearch()}
+                        />
                         <a href="/">
-                            <FiSearch className="absolute right-2 top-2" size={18} color="black" />
+                            <FiSearch
+                                className="absolute right-2 top-2"
+                                size={18}
+                                color="black"
+                                onClick={submitSearch}
+                            />
                         </a>
                     </div>
                     {loading ?

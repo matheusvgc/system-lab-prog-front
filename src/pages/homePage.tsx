@@ -10,6 +10,7 @@ import api from "@/services/api";
 import { CircularProgress } from "@mui/material";
 import { userInfo } from "os";
 import { useEffect, useState } from "react"
+import { useSearchParams } from "react-router-dom";
 
 
 export default function HomePage() {
@@ -21,6 +22,7 @@ export default function HomePage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [numberOfPages, setNumberOfPages] = useState(0);
     const [currentProducts, setCurrentProducts] = useState<IProduct[]>([]);
+    const [searchParams] = useSearchParams();
 
     const { userType } = useAuth()
 
@@ -31,6 +33,15 @@ export default function HomePage() {
             window.location.reload()
         }
     }, [userType]);
+
+    useEffect(() => {
+        const query = searchParams.get("query");
+        if(query) {
+            filterProductsBySearch(query);
+        } else {
+            setCurrentProducts(products);
+        }
+    }, [searchParams, products]);
 
     async function fetchProducts() {
 
@@ -68,6 +79,20 @@ export default function HomePage() {
     function filterProductsByCategory(value: string) {
         setCurrentProducts(products.filter(product => product.product.category.categoryName === value));
     }
+
+    function filterProductsBySearch(term: string) {
+        if (!term) {
+            setCurrentProducts(products);
+            return;
+        }
+    
+        const filteredProducts = products.filter(product =>
+            product.product.productName.toLowerCase().includes(term.toLowerCase())
+        );
+    
+        setCurrentProducts(filteredProducts);
+    }
+    
 
     function sortProducts(value: string) {
         const sortedProducts = [...currentProducts];

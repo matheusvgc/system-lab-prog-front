@@ -57,6 +57,7 @@ export const AppRoutes = () => {
                             <HomePage />
                 }
             />
+            <Route path="/search" element={<HomePage />} />
             <Route path='/manageProducts' element={<ProtectedRoute component={ManageProducts} authenticated={authenticated} loading={loading} />} />
             <Route path='/createProduct' element={<ProtectedRoute component={CreateProduct} authenticated={authenticated} loading={loading} />} />
             <Route path='/listProducts' element={<ProtectedRoute component={ListProducts} authenticated={authenticated} loading={loading} />} />
