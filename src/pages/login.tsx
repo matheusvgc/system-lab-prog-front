@@ -1,47 +1,65 @@
-import AuthTextInput from "@/components/authComponents/AuthTextInput";
-import Footer from "@/components/footer";
+
+import { ErrorMessage, Form, Field, Formik } from "formik";
+import * as Yup from "yup";
+
 import LoginHeader from "@/components/loginHeader";
 import BaseButton from "@/components/ui/BaseButton";
 import useAuth from "@/hooks/useAuth";
-import { useState } from "react";
-
-interface LoginData {
-    username: string;
-    password: string;
-}
 
 export default function Login() {
 
-    const { handleLogin, loading } = useAuth()
-    const [loginData, setLoginData] = useState<LoginData>({
-        username: "",
-        password: "",
-    })
-    function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setLoginData({ ...loginData, [e.target.name]: e.target.value });
-    }
+    const formSchema = Yup.object().shape({
+            username: Yup.string().required("O nome de usuário é obrigatório!"),
+            password: Yup.string().required("A senha é obrigatória!")
+        });
 
-    function submitForm(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        handleLogin(loginData)
-    }
-
-
+    const { handleLogin, loading } = useAuth();
 
     return (
         <>
             <LoginHeader />
-            <form className="px-[10%] sm:px-[25%] md:px-[25%] gap-2 py-32" onSubmit={submitForm}>
-                <h1 className="text-center text-2xl mb-5">Login de Usuário</h1>
-                <div className="flex flex-col gap-4 mb-5">
-                    <AuthTextInput label="Username" name="username" placeholder="Digite seu usuário" type="text" handleInputChange={handleInputChange} />
-                    <AuthTextInput label="Senha" name="password" placeholder="Digite sua senha" type="password" handleInputChange={handleInputChange} />
-                </div>
-                <div className="text-center">
-                    {/* <button type="submit">Fazer login</button> */}
-                    <BaseButton type="submit" loading={loading}>Fazer Login</BaseButton>
-                </div>
-            </form>
+            <Formik
+                initialValues={{
+                    firstname: "",
+                    lastname: "",
+                    cpf: "",
+                    email: "",
+                    username: "",
+                    password: "",
+                    confirmPassword: ""
+                }}
+                
+                onSubmit={async (loginData) => {
+                    handleLogin(loginData);
+                }}
+
+                validationSchema={formSchema}
+            >
+                <Form className="p-4 grid-cols-2">
+                    <h1 className="text-2xl font-bold text-center">Cadastro</h1>
+                    <div className="mb-2 md:grid md:grid-cols-2 md:gap-2">
+
+                        <div className="flex flex-col gap-2 mb-2">
+                            <label htmlFor="username">Nome de usuário:</label>
+                            <Field className="p-2 rounded-lg bg-gray-200" name="username" placeholder="Digite seu nome de usuário"/>
+                            <ErrorMessage name='username'>
+                                {msg => <p className="text-red-500">{msg}</p>}
+                            </ErrorMessage>
+                        </div>
+                        <div className="flex flex-col gap-2 mb-2">
+                            <label htmlFor="name">Senha:</label>
+                            <Field className="p-2 rounded-lg bg-gray-200" name="password" type="password" placeholder="Digite sua senha"/>
+                            <ErrorMessage name='password'>
+                                {msg => <p className="text-red-500">{msg}</p>}
+                            </ErrorMessage>
+                        </div>
+
+                    </div>
+                    <div className="text-center">
+                        <BaseButton type="submit" loading={loading}>Enviar</BaseButton>
+                    </div>
+                </Form>
+            </Formik>
         </>
     )
 }

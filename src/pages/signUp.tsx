@@ -1,5 +1,4 @@
 import LoginHeader from "@/components/loginHeader";
-import Footer from "@/components/footer";
 import api from "@/services/api";
 import { ErrorMessage, Form, Field, Formik } from "formik";
 import * as Yup from "yup";
@@ -121,7 +120,6 @@ export default function SignUpPage() {
                     </div>
                 </Form>
             </Formik>
-            <Footer/>
         </>
     )
 }

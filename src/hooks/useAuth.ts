@@ -106,6 +106,7 @@ export default function useAuth() {
 	}, []);
 
 	async function handleLogin({ username, password }: SignInCredentials) {
+		setLoading(true);
 		try {
 			const { data } = await api.post("auth/login", {
 				username,
@@ -121,6 +122,8 @@ export default function useAuth() {
 		} catch (error: any) {
 			console.error(error);
 			createAlert(getErrorMessage("Usuário e/ou senha incorretos"), "info");
+		} finally {
+			setLoading(false);
 		}
 	}
 
