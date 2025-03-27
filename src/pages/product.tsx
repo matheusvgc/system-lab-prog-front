@@ -1,18 +1,19 @@
 import { BaseModal } from "@/components/BaseModal";
 import Header from "@/components/header";
 import EvaluationCard from "@/components/productComponents/EvaluationCard";
+import EvaluationStars from "@/components/productComponents/EvaluationStars";
 // import EvaluationStars from "@/components/productComponents/EvaluationStars";
 import SpecificationTable from "@/components/productComponents/SpecificationTable";
 import BaseButton from "@/components/ui/BaseButton";
 import QuantityInput from "@/components/ui/QuantityInput";
-import { IProduct } from "@/dataInterfaces/IProduct";
-import { IReview } from "@/dataInterfaces/IReview";
+import type { IProduct } from "@/dataInterfaces/IProduct";
+import type { IReview } from "@/dataInterfaces/IReview";
 import { useAlert } from "@/hooks/useAlert";
 import useAuth from "@/hooks/useAuth";
 import api from "@/services/api";
 import { getErrorMessage } from "@/utils/errorHandler";
-import { Box, CircularProgress, Input, Stack, Typography } from "@mui/material";
-import { Form } from "formik";
+import { Box, CircularProgress, Input, InputLabel, Stack, TextField, Typography } from "@mui/material";
+import { Field, Form } from "formik";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -33,9 +34,10 @@ export default function Product() {
 
     const { user } = useAuth();
     const { createAlert } = useAlert()
-
+    const [loadingCommet, setLoadingCommet] = useState<boolean>(false)
     const [loadingAddCart, setLoadingAddCart] = useState(false)
     const [loadingGetProduct, setLoadingGetProduct] = useState(true)
+    const [ratingValue, setRatingValue] = useState<number | null>(0);
     const [quantity, setQuantity] = useState<number | null>(1);
     const [modal, setModal] = useState<ModalOptions>('')
 
@@ -53,18 +55,33 @@ export default function Product() {
         try {
             const response = await api.get(`/productSku/${productId}`);
             setProduct(response.data);
-            console.log('avaliacoes', response.data)
+
         } catch (err) {
             console.error(err);
         } finally {
             setLoadingGetProduct(false)
         }
     }
-    const handleCreateComment = async () => {
-        console.log('criou')
+    const handleCreateComment = async (fields: any) => {
+        const dataFields = {
+            ...fields,
+            stars: ratingValue
+        }
+        setLoadingCommet(true)
+        try {
+            const response = await api.post(`product/addComment/${product?.product?.productId}/${user?.userId}`, dataFields);
+            fetchProduct()
+            createAlert('Item Inserido com Sucesso', 'success')
+            setModal('')
+        } catch (err: any) {
+
+            createAlert(getErrorMessage(err), "error")
+            console.error(err);
+        } finally {
+            setLoadingCommet(false)
+        }
     }
     async function addToCard() {
-        console.log('chegou na funcao')
         setLoadingAddCart(true)
         try {
             const response = await api.post(`/carts/addItemToCart/${user?.cart?.cartId}`, {
@@ -73,7 +90,7 @@ export default function Product() {
             });
             createAlert('Item Inserido com Sucesso', 'success')
         } catch (err: any) {
-            console.log('errror', err)
+
             createAlert(getErrorMessage(err.response?.data?.message), "error")
             console.error(err);
         } finally {
@@ -81,8 +98,19 @@ export default function Product() {
         }
     }
 
+
+    const handleCloseModal = () => {
+        setModal('')
+        setRatingValue(0)
+    }
+
+    const handleRatingChange = (newValue: number | null) => {
+
+        setRatingValue(newValue);
+    };
+
     const handleQuantityChange = (value: number | null) => {
-        console.log('Valor atual:', value);
+
         setQuantity(value);
     };
 
@@ -125,15 +153,50 @@ export default function Product() {
 
             </main>
 
-            <BaseModal loading={true} open={modal === 'insert'} onClose={() => setModal('')} onSubmit={handleCreateComment}>
+            <BaseModal loading={loadingCommet} open={modal === 'insert'} onClose={handleCloseModal} onSubmit={handleCreateComment}>
                 <Stack direction="column" gap={1} pt={1}>
 
 
 
+                    <InputLabel
+                        sx={{
+                            fontSize: 14,
+                            fontWeight: 600,
+                            color: 'black',
+                            mb: 1
+                        }}
+                    >
+                        Título
+                    </InputLabel>
+                    <Field
+                        name="title"
+                        as={TextField}
+                        variant="outlined"
+                        fullWidth
+                        required
+                    />
 
-                    <Input name="tema" type="text" required />
-                    <Input name="compromisso_firmado" type="text" required />
+                    <InputLabel
+                        sx={{
+                            fontSize: 14,
+                            fontWeight: 600,
+                            color: 'black',
+                            mb: 1
+                        }}
+                    >
+                        Descrição
+                    </InputLabel>
+                    <Field
+                        name="comment"
+                        as={TextField}
+                        variant="outlined"
+                        fullWidth
+                        required
+                        multiline
+                        rows={4}
+                    />
 
+                    <EvaluationStars editable onChange={handleRatingChange} />
 
                 </Stack>
             </BaseModal>

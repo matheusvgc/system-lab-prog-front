@@ -8,7 +8,6 @@ import type { IProduct } from "@/dataInterfaces/IProduct";
 import useAuth from "@/hooks/useAuth";
 import api from "@/services/api";
 import { CircularProgress } from "@mui/material";
-import { userInfo } from "os";
 import { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom";
 
@@ -113,7 +112,7 @@ export default function HomePage() {
     return (
         <>
             <Header />
-            <CategoriesMenu />
+            {/* <CategoriesMenu /> */}
             <div className="w-full bg-gray-100 pb-10 flex flex-col justify-center items-center">
 
                 <h1 className="text-center text-4xl p-8">Nossos produtos</h1>
@@ -126,11 +125,11 @@ export default function HomePage() {
                             </li>
                         ))}
                     </DropDownMenu>
-                    <DropDownMenu title="Marcas">
+                    {/* <DropDownMenu title="Marcas">
                         <li className="py-2 hover:text-gray-500">Todos</li>
                         <li className="py-2 hover:text-gray-500">JBL</li>
                         <li className="py-2 hover:text-gray-500">Samsung</li>
-                    </DropDownMenu>
+                    </DropDownMenu> */}
                     <DropDownMenu title="Ordenar por">
                         <li className="py-2 hover:text-gray-500" onClick={() => sortProducts("greaterPrice")}>Maior preço</li>
                         <li className="py-2 hover:text-gray-500" onClick={() => sortProducts("lowerPrice")}>Menor preço</li>
