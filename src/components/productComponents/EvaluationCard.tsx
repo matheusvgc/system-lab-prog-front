@@ -12,7 +12,7 @@ export default function EvaluationCard({ review }: Props) {
     return (
         <div className="grid grid-cols-[1fr_3fr_1fr] border-t-2 border-b-2 border-primary min-h-50 p-4 gap-4">
             <div className="flex flex-col gap-2 justify-center">
-                <p>{review.user.firstname + " " + review.user.lastname}</p>
+                {/* <p>{review.user.firstname + " " + review.user.lastname}</p> */}
                 <p>{formatDate(review.createdAt)}</p>
             </div>
             <div className="flex flex-col gap-2 justify-center">
