@@ -1,70 +1,126 @@
-import LoginHeader from "@/components/loginHeader"
-import AuthTextInput from "@/components/authComponents/AuthTextInput";
-import { useState } from "react"
+import LoginHeader from "@/components/loginHeader";
 import Footer from "@/components/footer";
 import api from "@/services/api";
-
-interface IUser {
-    firstname: string;
-    lastname: string;
-    cpf: string;
-    email: string;
-    username: string;
-    password: string;
-    confirmPassword: string;
-}
+import { ErrorMessage, Form, Field, Formik } from "formik";
+import * as Yup from "yup";
+import BaseButton from "@/components/ui/BaseButton";
+import { useAlert } from "@/hooks/useAlert";
+import { getErrorMessage } from "@/utils/errorHandler";
+import { useState } from "react";
 
 export default function SignUpPage() {
 
-    const [newUser, setNewUser] = useState<IUser>({
-        firstname: "",
-        lastname: "",
-        cpf: "",
-        email: "",
-        username: "",
-        password: "",
-        confirmPassword: "",
+    const { createAlert } = useAlert();
+
+    const [loading, setLoading] = useState(false);
+
+    const formSchema = Yup.object().shape({
+        firstname: Yup.string().required("O nome é obrigatório!"),
+        lastname: Yup.string().required("O sobrenome é obrigatório!"),
+        cpf: Yup.string().required("O cpf é obrigatório!"),
+        email: Yup.string().required("O email é obrigatório!"),
+        username: Yup.string().required("O nome de usuário é obrigatório!"),
+        password: Yup.string().required("A senha é obrigatória!"),
+        confirmPassword: Yup.string().required("A senha é obrigatória!")
     });
-
-    function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setNewUser({...newUser, [e.target.name]: e.target.value });
-    }
-
-    async function submitForm(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        if (newUser.password !== newUser.confirmPassword) return;
-        
-        try {
-            const newCustomer = await api.post("/auth/register", {
-                ...newUser,
-                role: "CUSTOMER",
-                status: "ENABLED"
-            });
-            console.log(newCustomer.data);
-        } catch (err) {
-            console.error(err);
-        }
-
-    }
 
     return (
         <>
             <LoginHeader/>
-            <form className="p-8 gap-2 mb-5" onSubmit={submitForm}>
-                <h1 className="text-center text-2xl mb-5">Cadastro</h1>
-                <div className="flex flex-col gap-4 mb-5 md:grid md:grid-cols-2">
-                    <AuthTextInput label="Nome" placeholder="Digite seu nome" type="text" name="firstname" handleInputChange={handleInputChange}/>
-                    <AuthTextInput label="Sobrenome" placeholder="Digite seu sobrenome" type="text" name="lastname" handleInputChange={handleInputChange}/>
-                    <AuthTextInput label="CPF" placeholder="Digite seu CPF" type="text" name="cpf" handleInputChange={handleInputChange}/>
-                    <AuthTextInput label="Email" placeholder="Digite seu email" type="email" name="email"  handleInputChange={handleInputChange}/>
-                    <AuthTextInput label="Senha" placeholder="Digite sua senha" type="password" name="password"  handleInputChange={handleInputChange}/>
-                    <AuthTextInput label="Confirmar senha" placeholder="Confirme a senha" type="password" name="confirmPassword"  handleInputChange={handleInputChange}/>
-                    <AuthTextInput label="Nome de usuário" placeholder="Digite seu nome de usuário" type="text" name="username"  handleInputChange={handleInputChange}/>
-                </div>
-                <div className="mx-auto my-5 py-5 w-full bg-gray-500 text-center text-white rounded-lg mb-5 hover:cursor-pointer lg:w-200">
-                    <button type="submit">Confirmar cadastro</button>
-                </div>
-            </form>
+            <Formik
+                initialValues={{
+                    firstname: "",
+                    lastname: "",
+                    cpf: "",
+                    email: "",
+                    username: "",
+                    password: "",
+                    confirmPassword: ""
+                }}
+                
+                onSubmit={async (userData) => {
+                    if (userData.password !== userData.confirmPassword) {
+                        createAlert("As senhas não conferem!", "error");
+                        return;
+                    }
+
+                    setLoading(true);
+                    try {
+                        await api.post("/auth/register", {
+                            ...userData,
+                            role: "CUSTOMER",
+                            status: "ENABLED"
+                        });
+                        createAlert("Usuário cadastrado com sucesso!", "success");
+                    } catch (err) {
+                        createAlert(getErrorMessage(err), "error");
+                    } finally {
+                        setLoading(false);
+                    }
+                }}
+
+                validationSchema={formSchema}
+            >
+                <Form className="p-4 grid-cols-2">
+                    <h1 className="text-2xl font-bold text-center">Cadastro</h1>
+                    <div className="mb-2 md:grid md:grid-cols-2 md:gap-2">
+
+                        <div className="flex flex-col gap-2 mb-2">
+                            <label htmlFor="name">Nome:</label>
+                            <Field className="p-2 border-black-500 rounded-lg bg-gray-200" name="firstname" placeholder="Digite seu nome"/>
+                            <ErrorMessage name='firstname'>
+                                {msg => <p className="text-red-500">{msg}</p>}
+                            </ErrorMessage>
+                        </div>
+                        <div className="flex flex-col gap-2 mb-2">
+                            <label htmlFor="name">Sobrenome:</label>
+                            <Field className="p-2 rounded-lg bg-gray-200" name="lastname" placeholder="Digite seu sobrenome"/>
+                            <ErrorMessage name='lastname'>
+                                {msg => <p className="text-red-500">{msg}</p>}
+                            </ErrorMessage>
+                        </div>
+                        <div className="flex flex-col gap-2 mb-2">
+                            <label htmlFor="name">Email:</label>
+                            <Field className="p-2 rounded-lg bg-gray-200" name="email" placeholder="Digite seu email"/>
+                            <ErrorMessage name='email'>
+                                {msg => <p className="text-red-500">{msg}</p>}
+                            </ErrorMessage>
+                        </div>
+                        <div className="flex flex-col gap-2 mb-2">
+                            <label htmlFor="name">Cpf:</label>
+                            <Field className="p-2 rounded-lg bg-gray-200" name="cpf" placeholder="Digite seu cpf"/>
+                            <ErrorMessage name='cpf'>
+                                {msg => <p className="text-red-500">{msg}</p>}
+                            </ErrorMessage>
+                        </div>
+                        <div className="flex flex-col gap-2 mb-2">
+                            <label htmlFor="username">Nome de usuário:</label>
+                            <Field className="p-2 rounded-lg bg-gray-200" name="username" placeholder="Digite seu nome de usuário"/>
+                            <ErrorMessage name='username'>
+                                {msg => <p className="text-red-500">{msg}</p>}
+                            </ErrorMessage>
+                        </div>
+                        <div className="flex flex-col gap-2 mb-2">
+                            <label htmlFor="name">Senha:</label>
+                            <Field className="p-2 rounded-lg bg-gray-200" name="password" type="password" placeholder="Digite sua senha"/>
+                            <ErrorMessage name='password'>
+                                {msg => <p className="text-red-500">{msg}</p>}
+                            </ErrorMessage>
+                        </div>
+                        <div className="flex flex-col gap-2 mb-2">
+                            <label htmlFor="name">Confirmar senha:</label>
+                            <Field className="p-2 rounded-lg bg-gray-200" name="confirmPassword" type="password" placeholder="Confirme sua senha"/>
+                            <ErrorMessage name='confirmPassword'>
+                                {msg => <p className="text-red-500">{msg}</p>}
+                            </ErrorMessage>
+                        </div>
+
+                    </div>
+                    <div className="text-center">
+                        <BaseButton type="submit" loading={loading}>Enviar</BaseButton>
+                    </div>
+                </Form>
+            </Formik>
             <Footer/>
         </>
     )
