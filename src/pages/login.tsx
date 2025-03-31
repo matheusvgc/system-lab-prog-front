@@ -36,7 +36,7 @@ export default function Login() {
                 validationSchema={formSchema}
             >
                 <Form className="p-4 grid-cols-2">
-                    <h1 className="text-2xl font-bold text-center">Cadastro</h1>
+                    <h1 className="text-2xl font-bold text-center">Login</h1>
                     <div className="mb-2 md:grid md:grid-cols-2 md:gap-2">
 
                         <div className="flex flex-col gap-2 mb-2">
@@ -56,7 +56,7 @@ export default function Login() {
 
                     </div>
                     <div className="text-center">
-                        <BaseButton type="submit" loading={loading}>Enviar</BaseButton>
+                        <BaseButton type="submit" loading={loading}>Fazer login</BaseButton>
                     </div>
                 </Form>
             </Formik>

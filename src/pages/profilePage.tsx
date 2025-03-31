@@ -8,6 +8,7 @@ import {formatDate} from "../utils/formatDate";
 import { formatPrice } from "../utils/formatPrice";
 import api from "@/services/api";
 import BaseButton from "@/components/ui/BaseButton";
+import EditCustomerForm from "@/components/customer/editCustomerForm";
 
 export default function ProfilePage() {
 
@@ -125,24 +126,12 @@ export default function ProfilePage() {
             <div className="m-4">
                 <div className="flex justify-between">
                     <p className="text-2xl">{user.firstname + " " + user.lastname}</p>
-                    <BaseButton onClick={() => setEditingProfile(!editingProfile)}>Editar perfil</BaseButton>
+                    <BaseButton onClick={() => setEditingProfile(!editingProfile)}>
+                        {!editingProfile ? "Editar perfil" : "Fechar"}
+                    </BaseButton>
                 </div>
                 {editingProfile && (
-                    <div className="m-3 md:mx-20">
-                        <div className="md:grid-cols-2">
-                            <input className="border-2 w-full p-2 my-2 rounded-lg" type="text" placeholder="Nome" name="firstname" value={userForm.firstname} onChange={handleUserFormChange}/>
-                            <input className="border-2 w-full p-2 my-2 rounded-lg" type="text" placeholder="Sobrenome" name="lastname" value={userForm.lastname} onChange={handleUserFormChange}/>
-                            <input className="border-2 w-full p-2 my-2 rounded-lg" type="email" placeholder="Email" name="email" value={userForm.email} onChange={handleUserFormChange}/>
-                            <input className="border-2 w-full p-2 my-2 rounded-lg" type="text" placeholder="Cpf" name="cpf" value={userForm.cpf} onChange={handleUserFormChange}/>
-                            <input className="border-2 w-full p-2 my-2 rounded-lg" type="password" placeholder="Senha" name="password" value={userForm.password} onChange={handleUserFormChange}/>
-                            <input className="border-2 w-full p-2 my-2 rounded-lg" type="password" placeholder="Confirmar senha" name="confirmPassword" value={userForm.confirmPassword} onChange={handleUserFormChange}/>
-
-                        </div>
-                        <div className="text-center">
-                            <button className="mx-4 hover:cursor-pointer hover:underline" onClick={() => setEditingProfile(false)}>Cancelar</button>
-                            <button className="mx-4 hover:cursor-pointer hover:underline" onClick={() => editUser()}>Salvar</button>
-                        </div>
-                    </div>
+                    <EditCustomerForm userId={user.userId}/>
                 )}
 
                 <h1 className="text-2xl my-2">Seus Pedidos</h1>
