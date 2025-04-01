@@ -12,8 +12,8 @@ import { useAlert } from "@/hooks/useAlert";
 import useAuth from "@/hooks/useAuth";
 import api from "@/services/api";
 import { getErrorMessage } from "@/utils/errorHandler";
-import { Box, CircularProgress, Input, InputLabel, Stack, TextField, Typography } from "@mui/material";
-import { Field, Form } from "formik";
+import { CircularProgress, InputLabel, Stack, TextField } from "@mui/material";
+import { Field } from "formik";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -38,7 +38,7 @@ export default function Product() {
     const [loadingAddCart, setLoadingAddCart] = useState(false)
     const [loadingGetProduct, setLoadingGetProduct] = useState(true)
     const [ratingValue, setRatingValue] = useState<number | null>(0);
-    const [quantity, setQuantity] = useState<number | null>(1);
+    const [quantity, setQuantity] = useState<number>(1);
     const [modal, setModal] = useState<ModalOptions>('')
 
     const { productId } = useParams();
@@ -69,7 +69,7 @@ export default function Product() {
         }
         setLoadingCommet(true)
         try {
-            const response = await api.post(`product/addComment/${product?.product?.productId}/${user?.userId}`, dataFields);
+            await api.post(`product/addComment/${product?.product?.productId}/${user?.userId}`, dataFields);
             fetchProduct()
             createAlert('Item Inserido com Sucesso', 'success')
             setModal('')
@@ -84,9 +84,9 @@ export default function Product() {
     async function addToCard() {
         setLoadingAddCart(true)
         try {
-            const response = await api.post(`/carts/addItemToCart/${user?.cart?.cartId}`, {
+            await api.post(`/carts/addItemToCart/${user?.cart?.cartId}`, {
                 productSkuId: productId,
-                quantity: 1
+                quantity: quantity
             });
             createAlert('Item Inserido com Sucesso', 'success')
         } catch (err: any) {
@@ -109,8 +109,8 @@ export default function Product() {
         setRatingValue(newValue);
     };
 
-    const handleQuantityChange = (value: number | null) => {
-
+    const handleQuantityChange = (value: number) => {
+        console.log(value)
         setQuantity(value);
     };
 
@@ -127,7 +127,11 @@ export default function Product() {
                             <p>{product?.product.productName}</p>
                             {product?.price && <p>R$ {(product?.price / 100).toFixed(2)}</p>}
                             {/* <EvaluationStars /> */}
-                            <QuantityInput onChange={(value) => handleQuantityChange(value)} />
+                            <QuantityInput value={quantity} max={product?.stockQuantity} onChange={(value) => {
+                                    if (value !== null) {
+                                        handleQuantityChange(value);
+                                    }
+                                }} />
                             <BaseButton loading={loadingAddCart} onClick={addToCard}>Adicionar ao Carrinho</BaseButton>
                         </div>
                     </section>
