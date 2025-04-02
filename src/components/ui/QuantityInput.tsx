@@ -6,6 +6,8 @@ import {
 import { styled } from '@mui/system';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
+import { CircularProgress } from '@mui/material';
+import { useAlert } from '@/hooks/useAlert';
 
 const NumberInput = React.forwardRef(function CustomNumberInput(
     props: NumberInputProps,
@@ -40,6 +42,7 @@ interface QuantityInputProps {
     min?: number;
     max?: number;
     defaultValue?: number;
+    loading?: boolean;
 }
 
 export default function QuantityInput({
@@ -48,12 +51,22 @@ export default function QuantityInput({
     min = 1,
     max = 99,
     defaultValue,
+    loading
 }: QuantityInputProps) {
+    
+    const { createAlert } = useAlert();
+
+
     const [internalValue, setInternalValue] = React.useState<number | null>(
         defaultValue || min
     );
 
     const handleChange = (event: React.SyntheticEvent, newValue: number | null) => {
+        if (newValue && newValue > max) {
+            createAlert("Quantidade não pode exceder o estoque!", "warning");
+            return;
+        }
+        
         if (onChange) {
             onChange(newValue);
         } else {
@@ -62,13 +75,18 @@ export default function QuantityInput({
     };
 
     return (
-        <NumberInput
+        <>
+        {!loading ? (
+            <NumberInput
             aria-label="Quantity Input"
             min={min}
             max={max}
             value={value !== undefined ? value : internalValue}
             onChange={handleChange}
-        />
+            />) : (<div className="text-center">
+                    <CircularProgress size={20} color={'inherit'} />
+                </div>)}
+        </>
     );
 }
 

@@ -3,6 +3,8 @@ import BaseButton from "../ui/BaseButton";
 import QuantityInput from "../ui/QuantityInput";
 import { useState } from "react";
 import api from "@/services/api";
+import { useAlert } from "@/hooks/useAlert";
+import { getErrorMessage } from "@/utils/errorHandler";
 
 interface Props {
     cartItem: any;
@@ -12,18 +14,23 @@ interface Props {
 
 export default function CartItemCard({ cartItem, handleDelete, loadingRemoveCart }: Props) {
 
+    const { createAlert } = useAlert();
+
+    const [loadingUpdateCartItemQuantity, setLoadingUpdateCartItemQuantity] = useState(false);
     const [quantity, setQuantity] = useState<number>(cartItem.quantity);
 
     async function updateCartItemQuantity(value: number) {
+        setLoadingUpdateCartItemQuantity(true);
         try {
-            const response = await api.put(`/carts/updateQuantityOfCartItem/${cartItem.cartItemId}`, null, { 
-                params: {
-                quantity: quantity
-              } });
-            console.log(response)
+            await api.put(`/carts/updateQuantityOfCartItem/${cartItem.cartItemId}`, null, { 
+            params: {
+                quantity: value
+            }});
+            
         } catch (error) {
-            console.error(error);
+            createAlert(getErrorMessage(error), "error");
         } finally {
+            setLoadingUpdateCartItemQuantity(false);
             setQuantity(value);
         }
     }
@@ -34,7 +41,12 @@ export default function CartItemCard({ cartItem, handleDelete, loadingRemoveCart
                 <td><img src={cartItem.productSku.productImage} alt="Fone de ouvido" className="w-20 h-20" /></td>
                 <td className="text-center">{cartItem.productSku.product.productName}</td>
                 <td className="text-center">
-                    <QuantityInput defaultValue={quantity} value={quantity} max={cartItem.productSku.stockQuantity} onChange={(value) => {
+                    <QuantityInput 
+                    defaultValue={quantity} 
+                    value={quantity}
+                    max={cartItem.productSku.stockQuantity} 
+                    loading={loadingUpdateCartItemQuantity}
+                    onChange={(value) => {
                         if (value !== null) {
                             updateCartItemQuantity(value);
                         }
@@ -47,7 +59,8 @@ export default function CartItemCard({ cartItem, handleDelete, loadingRemoveCart
                     hoverColor="hover:bg-red-800" 
                     onClick={() => handleDelete(cartItem.cartItemId)}
                     loading={loadingRemoveCart}
-                    >Remover</BaseButton></td>
+                    >Remover</BaseButton>
+                </td>
             </tr>
         </tbody>
     )
