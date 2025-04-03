@@ -22,13 +22,13 @@ export default function Header() {
     }
 
     function submitSearch() {
-        if(searchTerm.trim() === "") return;
+        if (searchTerm.trim() === "") return;
         navigate(`/search?query=${encodeURIComponent(searchTerm)}`);
     }
 
     return (
         <>
-            <header className="w-full bg-black flex justify-center">
+            <header className="w-full bg-[#121212] flex justify-center">
                 <div className="w-full max-w-7xl py-6 px-4 md:px-10 flex flex-col md:flex-row gap-4 md:gap-10 items-center justify-between text-white">
                     <div className="relative w-full flex items-center justify-between gap-4 md:block md:w-auto">
                         {menuOpen ? <FiX onClick={toggleMenu} className="md:hidden z-20" size={30} /> : <FiMenu onClick={toggleMenu} className="md:hidden z-20" size={30} />}
