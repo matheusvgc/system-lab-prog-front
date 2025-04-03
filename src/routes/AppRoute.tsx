@@ -34,6 +34,7 @@ import EditCategory from '@/pages/admin/categories/editCategory';
 import ProfilePage from '@/pages/profilePage';
 import OrdersPage from '@/pages/ordersPage';
 import OrderPage from '@/pages/orderPage';
+import ManageOrders from '@/pages/admin/manageOrders/manageOrders';
 
 export const AppRoutes = () => {
 
@@ -75,6 +76,7 @@ export const AppRoutes = () => {
             <Route path='/listCategories' element={<ProtectedRoute component={ListCategories} authenticated={authenticated} loading={loading} />} />
             <Route path='/editCategory/:categoryId' element={<ProtectedRoute component={EditCategory} authenticated={authenticated} loading={loading} />} />
             
+            <Route path='manageOrders' element={<ProtectedRoute component={ManageOrders} authenticated={authenticated} loading={loading} />} />
             
             <Route path="/signup" element={<SignUpPage />} />
             <Route path="/product/:productId" element={<Product />} />

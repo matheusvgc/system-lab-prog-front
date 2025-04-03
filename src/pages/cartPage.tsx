@@ -1,4 +1,5 @@
 import Header from "@/components/header";
+import CartItemCard from "@/components/productComponents/CartItemCard";
 
 import BaseButton from "@/components/ui/BaseButton";
 import { useAlert } from "@/hooks/useAlert";
@@ -82,23 +83,12 @@ export default function CartPage() {
                             </thead>
                             {user.cart?.cartItems.length > 0 ? 
                             user.cart?.cartItems.map((cartItem: any) => (
-                                <tbody key={cartItem.cartItemId}>
-                                    <tr>
-                                        <td><img src={cartItem.productSku.productImage} alt="Fone de ouvido" className="w-20 h-20" /></td>
-                                        <td className="text-center">{cartItem.productSku.product.productName}</td>
-                                        <td className="text-center">
-                                            <button type="button" className="p-2">-</button>99<button type="button" className="p-2">+</button>
-                                        </td>
-                                        <td className="text-center">R$ {formatPrice(cartItem.productSku.price)}</td>
-                                        <td className="text-center">
-                                            <BaseButton 
-                                            bgColor="bg-red-700" 
-                                            hoverColor="hover:bg-red-800" 
-                                            onClick={() => handleDelete(cartItem.cartItemId)}
-                                            loading={loadingRemoveCart}
-                                            >Remover</BaseButton></td>
-                                    </tr>
-                                </tbody>
+                                <CartItemCard 
+                                key={cartItem.cartItemId} 
+                                cartItem={cartItem}
+                                handleDelete={handleDelete}
+                                loadingRemoveCart={loadingRemoveCart}
+                                />
                             )) : (
                                 <tbody>
                                     <tr>

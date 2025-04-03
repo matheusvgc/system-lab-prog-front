@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { ButtonHTMLAttributes } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    variant?: "default" | "outline" | "destructive";
+    variant?: "default" | "outline" | "destructive" | "aprove";
     size?: "sm" | "md" | "lg";
 }
 
@@ -14,9 +14,10 @@ export default function Button({
 }: ButtonProps) {
     
     const variants = {
-        default: "bg-blue-600 hover:bg-blue-700 text-white",
+        default: "bg-blue-700 hover:bg-blue-800 text-white",
         outline: "border border-gray-300 hover:bg-gray-100",
-        destructive: "bg-red-600 hover:bg-red-700 text-white",
+        destructive: "bg-red-700 hover:bg-red-800 text-white",
+        aprove: "bg-green-700 hover:bg-green-800 text-white",
     };
 
     const sizes = {
