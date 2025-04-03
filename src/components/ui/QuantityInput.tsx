@@ -83,9 +83,12 @@ export default function QuantityInput({
             max={max}
             value={value !== undefined ? value : internalValue}
             onChange={handleChange}
-            />) : (<div className="text-center">
-                    <CircularProgress size={20} color={'inherit'} />
-                </div>)}
+            />
+        ) : (
+            <div className="text-center">
+                <CircularProgress size={20} color={'inherit'} />
+            </div>
+        )}
         </>
     );
 }
