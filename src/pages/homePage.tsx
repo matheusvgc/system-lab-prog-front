@@ -1,4 +1,3 @@
-import CategoriesMenu from "@/components/categoriesMenu";
 import Header from "@/components/header";
 import ChangePageButton from "@/components/homePageComponents/ChangePageButton";
 import DropDownMenu from "@/components/homePageComponents/DropDownMenu";
@@ -125,11 +124,6 @@ export default function HomePage() {
                             </li>
                         ))}
                     </DropDownMenu>
-                    {/* <DropDownMenu title="Marcas">
-                        <li className="py-2 hover:text-gray-500">Todos</li>
-                        <li className="py-2 hover:text-gray-500">JBL</li>
-                        <li className="py-2 hover:text-gray-500">Samsung</li>
-                    </DropDownMenu> */}
                     <DropDownMenu title="Ordenar por">
                         <li className="py-2 hover:text-gray-500" onClick={() => sortProducts("greaterPrice")}>Maior preço</li>
                         <li className="py-2 hover:text-gray-500" onClick={() => sortProducts("lowerPrice")}>Menor preço</li>
