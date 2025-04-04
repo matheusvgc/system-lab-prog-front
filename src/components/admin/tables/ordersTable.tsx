@@ -1,3 +1,4 @@
+import ChangePageButton from "@/components/homePageComponents/ChangePageButton";
 import BaseButton from "@/components/ui/BaseButton";
 import {
 
@@ -33,16 +34,25 @@ export default function OrdersTable() {
     const [fetchOrdersLoading, setFetchOrdersLoading] = useState(false);
 
     const [orders, setOrders] = useState<OrdersData[]>([]);
+    const [page, setPage] = useState<number>(0);
+    const [numberOfPages, setNumberOfPages] = useState<number>(1);
 
     useEffect(() => {
         fetchOrders();
-    }, []);
+    }, [page]);
 
     async function fetchOrders() {
         try {
             setFetchOrdersLoading(true);
-            const response = await api.get("/orders");
-            setOrders(response.data);
+            const response = await api.get("/orders", {
+                params: {
+                    page: page,
+                    size: 10
+                }
+            });
+            setOrders(response.data.content);
+            setPage(response.data.pageable.pageNumber);
+            setNumberOfPages(response.data.totalPages);
             setFetchOrdersLoading(false);
         } catch (error) {
             console.error(error);
@@ -66,9 +76,16 @@ export default function OrdersTable() {
         }
     }
 
+    function changePage(page: number) {
+        if (page >= numberOfPages || page < 0) return;
+
+        setPage(page);
+    }
+
     return (
         <>
         {!fetchOrdersLoading ? (
+            <>
             <Table>
                 <TableHeader>
                     <TableRow>
@@ -92,7 +109,7 @@ export default function OrdersTable() {
                                     hoverColor="hover:bg-green-800"
                                     loading={loading}
                                     onClick={() => changeStatus(order.orderId, "DONE")}
-                                >
+                                    >
                                     <div className="flex">
                                         <ClipboardPaste size={16} className="mr-1"/>Aprovar
                                     </div>
@@ -102,7 +119,7 @@ export default function OrdersTable() {
                                     hoverColor="hover:bg-red-800"
                                     loading={loading}
                                     onClick={() => changeStatus(order.orderId, "REJECT")}
-                                >
+                                    >
                                     <div className="flex">
                                         <ClipboardX size={16} className="mr-1"/>Recusar
                                     </div>
@@ -112,6 +129,14 @@ export default function OrdersTable() {
                     ))}
                 </TableBody>
             </Table>
+            <div className="flex justify-center gap-2">
+                <ChangePageButton icon="<-" changePage={() => changePage(page - 1)} />
+                {Array.from({ length: numberOfPages }).map((_, index) => (
+                    <ChangePageButton key={index} icon={(index + 1).toString()} changePage={() => changePage(index)} />
+                ))}
+                <ChangePageButton icon="->" changePage={() => changePage(page + 1)} />
+            </div>
+            </>
         ) : (
             <CircularProgress size={30} color="inherit" />
         )}
