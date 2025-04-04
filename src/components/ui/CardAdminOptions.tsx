@@ -15,11 +15,12 @@ interface CardAdminOptionsProps {
     textButton: string;
     bgColor?: string
     redirect: string
+    textColor?: string
 }
 
 
 
-export default function CardAdminOptions({ title, description, image, textButton, bgColor, redirect }: CardAdminOptionsProps) {
+export default function CardAdminOptions({ title, description, image, textButton, bgColor, redirect, textColor }: CardAdminOptionsProps) {
 
     const navigate = useNavigate();
 
@@ -27,19 +28,20 @@ export default function CardAdminOptions({ title, description, image, textButton
         navigate(redirect)
     }
     return (
-        <Card sx={{ width: 345, bgcolor: bgColor || '#C0C0C0' }}>
+        <Card sx={{ width: 345, bgcolor: bgColor || '#EFF6FF' }}>
             <CardActionArea>
-                <CardMedia
+                {image && <CardMedia
                     component="img"
                     height="140"
                     image={image || "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80"}
                     alt="green iguana"
-                />
+                />}
+
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="div" color='white'>
+                    <Typography gutterBottom variant="h5" component="div" color={textColor || 'white'} fontFamily={'inherit'}>
                         {title}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#FFFFFF', height: 50, overflow: 'hidden', }}>
+                    <Typography variant="body2" sx={{ color: textColor || 'white', height: 50, overflow: 'hidden', fontFamily: 'inherit' }}>
                         {description}
                     </Typography>
                 </CardContent>

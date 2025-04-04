@@ -67,11 +67,11 @@ export default function Header() {
                                         <li className="py-2 text-black"><Link to="/signup">Cadastro</Link></li>
                                     </ul>
                                 </li> : <Stack direction={'row'} alignItems={'center'} gap={5}><Link to="/customerProfile"><UserIcon name={user.username} loading={loading} /></Link>  <button type="button" className="cursor-pointer" onClick={() => handleLogOut()}>Sair</button> </Stack>}
-
-                                <li>
+                                {userType !== 'ADMIN' && <li>
                                     <a href="/">Produtos</a>
-                                </li>
-                                {authenticated ? <li>
+                                </li>}
+
+                                {authenticated && userType !== 'ADMIN' ? <li>
                                     <a href="/cartPage">
                                         <FiShoppingCart className="hidden md:block" size={28} />
                                     </a>
