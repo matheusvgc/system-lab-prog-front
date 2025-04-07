@@ -49,7 +49,7 @@ export default function ProductForm ( { onSubmit, initialProduct } : ProductForm
     async function fetchCategories() {
         try {
             const response = await api.get("/categories");
-            setCategories(response.data);
+            setCategories(response.data.content);
         } catch (error) {
             console.error(error);
         }

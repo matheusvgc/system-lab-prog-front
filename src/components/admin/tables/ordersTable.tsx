@@ -1,6 +1,5 @@
 import { CustomerModal } from "@/components/CustomerModal";
 import ChangePageButton from "@/components/homePageComponents/ChangePageButton";
-import BaseButton from "@/components/ui/BaseButton";
 import BaseSelectInput from "@/components/ui/BaseSelectInput";
 import {
 
@@ -11,7 +10,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { IUser } from "@/dataInterfaces/IUser";
 import { useAlert } from "@/hooks/useAlert";
 import { UserProps } from "@/hooks/useAuth";
 import { ModalOptions } from "@/pages/product";
@@ -20,7 +18,6 @@ import { getErrorMessage } from "@/utils/errorHandler";
 import { formatDate } from "@/utils/formatDate";
 import { formatPrice } from "@/utils/formatPrice";
 import { Button, CircularProgress } from "@mui/material";
-import { ClipboardPaste, ClipboardX } from "lucide-react";
 import { useEffect, useState } from "react";
 
 interface OrdersData {
@@ -80,10 +77,12 @@ export default function OrdersTable() {
             setLoading(false);
         }
     }
+    
     const handleSetModal = (modal: ModalOptions, user: UserProps) => {
         setModal(modal);
         setSelectedUser(user);
     }
+
     function changePage(page: number) {
         if (page >= numberOfPages || page < 0) return;
 
@@ -98,6 +97,7 @@ export default function OrdersTable() {
                         <TableHeader>
                             <TableRow>
                                 <TableHead>Id do pedido</TableHead>
+                                <TableHead>Nome do cliente</TableHead>
                                 <TableHead>Status</TableHead>
                                 <TableHead>Total</TableHead>
                                 <TableHead>Data do pedido</TableHead>
@@ -108,30 +108,17 @@ export default function OrdersTable() {
                             {orders.map((order) => (
                                 <TableRow key={order.orderId}>
                                     <TableCell><Button onClick={() => handleSetModal('customer', order?.user)}>{order.orderId}</Button></TableCell>
+                                    <TableCell>{order.user.firstname}</TableCell>
                                     <TableCell>{order.status}</TableCell>
                                     <TableCell>{"R$ " + formatPrice(order.total)}</TableCell>
                                     <TableCell>{formatDate(order.createdAt)}</TableCell>
                                     <TableCell className="text-center space-x-2 flex items-center justify-center">
-                                        <BaseButton
-                                            bgColor="bg-green-700  text-white"
-                                            hoverColor="hover:bg-green-800"
-                                            loading={loading}
-                                            onClick={() => changeStatus(order.orderId, "DONE")}
-                                        >
-                                            <div className="flex">
-                                                <ClipboardPaste size={16} className="mr-1" />Aprovar
-                                            </div>
-                                        </BaseButton>
-                                        <BaseButton
-                                            bgColor="bg-red-700  text-white"
-                                            hoverColor="hover:bg-red-800"
-                                            loading={loading}
-                                            onClick={() => changeStatus(order.orderId, "REJECT")}
-                                        >
-                                            <div className="flex">
-                                                <ClipboardX size={16} className="mr-1" />Recusar
-                                            </div>
-                                        </BaseButton>
+                                    <BaseSelectInput onChange={(e: any) => changeStatus(order.orderId, e.target.value)} loading={loading}>
+                                        <option value="" disabled selected>Selecione uma opção</option>
+                                        <option value="APROVADO">Aprovar</option>
+                                        <option value="ENVIADO">Enviar</option>
+                                        <option value="CANCELADO">Cancelar</option>
+                                    </BaseSelectInput>
                                     </TableCell>
                                 </TableRow>
                             ))}
