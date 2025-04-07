@@ -26,7 +26,7 @@ export type ModalOptions =
     | 'modules'
     | 'opcoes-detalhe'
     | 'signature'
-    | 'assinatura'
+    | 'customer'
     | 'finalizar'
     | 'filter'
 

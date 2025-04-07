@@ -22,11 +22,12 @@ export default function CartItemCard({ cartItem, handleDelete, loadingRemoveCart
     async function updateCartItemQuantity(value: number) {
         setLoadingUpdateCartItemQuantity(true);
         try {
-            await api.put(`/carts/updateQuantityOfCartItem/${cartItem.cartItemId}`, null, { 
-            params: {
-                quantity: value
-            }});
-            
+            await api.put(`/carts/updateQuantityOfCartItem/${cartItem.cartItemId}`, null, {
+                params: {
+                    quantity: value
+                }
+            });
+
         } catch (error) {
             createAlert(getErrorMessage(error), "error");
         } finally {
@@ -37,31 +38,46 @@ export default function CartItemCard({ cartItem, handleDelete, loadingRemoveCart
 
     return (
         <tbody key={cartItem.cartItemId}>
-            <tr>
-                <td><img src={cartItem.productSku.productImage} alt="Fone de ouvido" className="w-20 h-20" /></td>
-                <td className="text-center">{cartItem.productSku.product.productName}</td>
-                <td className="text-center">
-                    <QuantityInput 
-                    defaultValue={quantity} 
-                    value={quantity}
-                    max={cartItem.productSku.stockQuantity} 
-                    loading={loadingUpdateCartItemQuantity}
-                    onChange={(value) => {
-                        if (value !== null) {
-                            updateCartItemQuantity(value);
-                        }
-                    }}/>
+            <tr className="flex flex-col sm:table-row border-b sm:border-0 mb-4 sm:mb-0">
+                <td className="p-2 sm:table-cell flex items-center justify-center sm:justify-start">
+                    <img src={cartItem.productSku.productImage} alt="Fone de ouvido" className="w-20 h-20" />
                 </td>
-                <td className="text-center">R$ {formatPrice(cartItem.productSku.price)}</td>
-                <td className="text-center">
+                <td className="p-2 sm:table-cell text-center sm:text-left">
+                    <span className="sm:hidden font-semibold">Produto: </span>
+                    {cartItem.productSku.product.productName}
+                </td>
+                <td className="p-2 sm:table-cell text-center sm:text-left">
+                    <span className="sm:hidden font-semibold">Quantidade: </span>
+                    <QuantityInput
+                        defaultValue={quantity}
+                        value={quantity}
+                        max={cartItem.productSku.stockQuantity}
+                        loading={loadingUpdateCartItemQuantity}
+                        onChange={(value) => {
+                            if (value !== null) {
+                                updateCartItemQuantity(value);
+                            }
+                        }}
+                    />
+                </td>
+                <td className="p-2 sm:table-cell text-center sm:text-left">
+                    <span className="sm:hidden font-semibold">Preço: </span>
+                    R$ {formatPrice(cartItem.productSku.price)}
+                </td>
+                <td className="p-2 sm:table-cell text-center sm:text-left">
+
                     <BaseButton
-                    bgColor="bg-red-700" 
-                    hoverColor="hover:bg-red-800" 
-                    onClick={() => handleDelete(cartItem.cartItemId)}
-                    loading={loadingRemoveCart}
-                    >Remover</BaseButton>
+                        bgColor="bg-red-700"
+                        hoverColor="hover:bg-red-800"
+                        onClick={() => handleDelete(cartItem.cartItemId)}
+                        loading={loadingRemoveCart}
+                    >
+                        Remover
+                    </BaseButton>
                 </td>
             </tr>
         </tbody>
+
+
     )
 }
