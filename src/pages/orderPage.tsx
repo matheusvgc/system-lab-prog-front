@@ -41,7 +41,7 @@ export default function OrderPage() {
                     </div>
                     <h2 className="text-xl font-bold my-2">Itens</h2>
                     {order?.orderItems.map((item: any) => (
-                        <div className="border-b-2 border-primary min-h-20 p-4">
+                        <div key={item.orderItemId} className="border-b-2 border-primary min-h-20 p-4">
                             <p>Produto: {item.productSku.product.productName}</p>
                             <p>Categoria: {item.productSku.product.category?.categoryName}</p>
                             <p>Descrição: {item.productSku.product.productDescription}</p>
