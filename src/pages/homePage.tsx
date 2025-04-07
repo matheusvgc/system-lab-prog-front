@@ -72,7 +72,7 @@ export default function HomePage() {
     async function fetchCategories() {
         try {
             const response = await api.get("/categories");
-            const categories = response.data;
+            const categories = response.data.content;
             setCategories(categories);
         } catch (error) {
             console.error(error);

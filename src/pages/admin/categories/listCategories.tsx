@@ -3,34 +3,12 @@ import Header from "@/components/header";
 import useAuth from "@/hooks/useAuth";
 import api from "@/services/api";
 import { CircularProgress } from "@mui/material";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-interface CategoryData {
-    categoryId: string;
-    categoryName: string;
-    categoryDescription: string;
-}
 
 export default function ListCategories() {
 
     const { loading } = useAuth();
-    const [categories, setCategories] = useState<CategoryData[]>([]);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        fetchCategories();
-    }, []);
-
-    async function fetchCategories() {
-        try {
-            const response = await api.get("/categories");
-            setCategories(response.data);
-        } catch (error) {
-            console.error(error);
-        }
-    }
-    
     const handleEdit = (categoryId: string) => {
         navigate("/editCategory/" + categoryId)
     };
@@ -42,7 +20,6 @@ export default function ListCategories() {
             const response = await api.delete(`categories/${categoryId}`);
             if (response.status === 204) {
                 alert("Categoria deletada!");
-                fetchCategories();
             } else {
                 alert("Erro ao excluir a categoria!");
             }
@@ -59,7 +36,7 @@ export default function ListCategories() {
                 {loading ? (
                     <CircularProgress size={30} color="inherit" />
                 ) : (
-                    <CategoriesTable categories={categories} onEdit={handleEdit} onDelete={handleDelete} />
+                    <CategoriesTable onEdit={handleEdit} onDelete={handleDelete} />
                 )}
             </div>
         </>

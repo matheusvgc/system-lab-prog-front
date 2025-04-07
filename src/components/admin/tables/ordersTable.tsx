@@ -25,8 +25,6 @@ interface OrdersData {
     createdAt: string;
 }
 
-
-
 export default function OrdersTable() {
 
     const { createAlert } = useAlert();
@@ -53,9 +51,8 @@ export default function OrdersTable() {
             setOrders(response.data.content);
             setPage(response.data.pageable.pageNumber);
             setNumberOfPages(response.data.totalPages);
-            setFetchOrdersLoading(false);
         } catch (error) {
-            console.error(error);
+            createAlert(getErrorMessage(error), "error");
         } finally {
             setFetchOrdersLoading(false);
         }
@@ -91,8 +88,8 @@ export default function OrdersTable() {
                     <TableRow>
                         <TableHead>Id do pedido</TableHead>
                         <TableHead>Status</TableHead>
-                        <TableHead>Data do pedido</TableHead>
                         <TableHead>Total</TableHead>
+                        <TableHead>Data do pedido</TableHead>
                         <TableHead colSpan={2} className="text-center">Ações</TableHead>
                     </TableRow>
                 </TableHeader>
