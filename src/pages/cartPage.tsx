@@ -51,7 +51,11 @@ export default function CartPage() {
     async function doOrder() {
         setOrderLoading(true);
         try {
-            await api.post(`/orders/${user.userId}`);
+            await api.post(`/orders/${user.userId}`, null, {
+                params: {
+                    status: "PENDENTE"
+                }
+            });
             window.location.reload();
             createAlert("Pedido realizado com sucesso!", "success");
             navigate("/ordersPage");

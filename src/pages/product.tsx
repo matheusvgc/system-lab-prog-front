@@ -110,7 +110,6 @@ export default function Product() {
     };
 
     const handleQuantityChange = (value: number) => {
-        console.log(value)
         setQuantity(value);
     };
 

@@ -1,7 +1,7 @@
 
 import Header from "@/components/header"
 import useAuth from "@/hooks/useAuth"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import {formatDate} from "../utils/formatDate";
@@ -20,6 +20,33 @@ export default function ProfilePage() {
     const [editingProfile, setEditingProfile] = useState(false);
     const [creatingAddress, setCreatingAddress] = useState(false);
     const [deleteAddressLoading, setDeleteAddressLoading] = useState(false);
+
+    const [orders, setOrders] = useState([]);
+    const [loadingFetchOrders, setLoadingFetchOrders] = useState(false);
+
+    useEffect(() => {
+        if (!loading && user) {
+            fetchOrders();
+        }
+    }, [user, loading]);
+
+    async function fetchOrders() {
+        setLoadingFetchOrders(true);
+        try {
+            const response = await api.get(`/orders/byUserId/${user.userId}`, {
+                params: {
+                    page: 0,
+                    size: 3
+                }
+
+            });
+            setOrders(response.data.content);
+        } catch(err) {
+            console.log(err);
+        } finally {
+            setLoadingFetchOrders(false);
+        }
+    }
 
     async function deleteAddress(addressId: string) {
         setDeleteAddressLoading(true);
@@ -52,21 +79,28 @@ export default function ProfilePage() {
                 <h1 className="text-2xl my-2">Seus Pedidos</h1>
 
                 <div className="mx-3 md:mx-20">
-                    {user.orders.length > 0 ? (user.orders.slice(0, 3)?.map((order: any) => (
-                        <div key={order.orderId} className="border-b-2 border-primary min-h-20 p-4 gap-4 md:flex md:justify-between">
-                            <div>
-                                <p>Pedido #{order.orderId}</p>
-                                <p>Status: {order.status}</p>
-                                <p>Data: {formatDate(order.createdAt)}</p>
-                                <p>Total: R$ {formatPrice(order.total)}</p>
+                    {!loadingFetchOrders ? (
+                        <>
+                        {orders.length > 0 ? (orders.map((order: any) => (
+                            <div key={order.orderId} className="border-b-2 border-primary min-h-20 p-4 gap-4 md:flex md:justify-between">
+                                <div>
+                                    <p>Pedido #{order.orderId}</p>
+                                    <p>Status: {order.status}</p>
+                                    <p>Data: {formatDate(order.createdAt)}</p>
+                                    <p>Total: R$ {formatPrice(order.total)}</p>
+                                </div>
+                                <Link to={`/order/${order.orderId}`}><p className="hover:cursor-pointer hover:underline">Visualizar</p></Link>
                             </div>
-                            <Link to={`/order/${order.orderId}`}><p className="hover:cursor-pointer hover:underline">Visualizar</p></Link>
+                            ))) : (
+                                <p className="text-xl text-center">Nenhum pedido cadastrado!</p>
+                            )}
+                        {orders.length > 0 && <Link to={`/ordersPage`}><p className="text-end hover:cursor-pointer hover:underline">Ver todos</p></Link>}
+                        </>
+                    ) : (
+                        <div className="text-center">
+                            <CircularProgress size={100} color={'inherit'} />
                         </div>
-                        ))) : (
-                            <p className="text-xl text-center">Nenhum pedido cadastrado!</p>
-                        )}
-                    {user.orders.length > 0 && <Link to={`/ordersPage`}><p className="text-end hover:cursor-pointer hover:underline">Ver todos</p></Link>}
-                        
+                    )}
                 </div>
                 
                 <div className="flex justify-between">
