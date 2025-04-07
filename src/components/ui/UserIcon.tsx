@@ -2,9 +2,11 @@ interface UserIconProps {
     name: string; // Nome do usuário
     imageUrl?: string; // URL da imagem de perfil (opcional)
     loading: boolean
+    isMobile?: boolean; // Propriedade para indicar se é para mobile
 }
 
-const UserIcon: React.FC<UserIconProps> = ({ name, imageUrl, loading }) => {return (
+const UserIcon: React.FC<UserIconProps> = ({ name, imageUrl, loading, isMobile }) => {
+    return (
         <div className="flex items-center space-x-2">
             {imageUrl ? (
                 <img
@@ -19,8 +21,8 @@ const UserIcon: React.FC<UserIconProps> = ({ name, imageUrl, loading }) => {retu
                     </span>
                 </div>
             )}
+            {!isMobile && <span className="text-white-700 font-medium">{name}</span>}
 
-            <span className="text-white-700 font-medium">{name}</span>
         </div>
     );
 };

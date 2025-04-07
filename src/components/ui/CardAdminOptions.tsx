@@ -28,7 +28,7 @@ export default function CardAdminOptions({ title, description, image, textButton
         navigate(redirect)
     }
     return (
-        <Card sx={{ width: 345, bgcolor: bgColor || '#EFF6FF' }}>
+        <Card sx={{ width: 315, bgcolor: bgColor || '#EFF6FF' }}>
             <CardActionArea>
                 {image && <CardMedia
                     component="img"
