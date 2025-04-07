@@ -32,7 +32,7 @@ export type ModalOptions =
 
 export default function Product() {
 
-    const { user } = useAuth();
+    const { user, authenticated } = useAuth();
     const { createAlert } = useAlert()
     const [loadingCommet, setLoadingCommet] = useState<boolean>(false)
     const [loadingAddCart, setLoadingAddCart] = useState(false)
@@ -53,6 +53,7 @@ export default function Product() {
     async function fetchProduct() {
 
         try {
+
             const response = await api.get(`/productSku/${productId}`);
             setProduct(response.data);
 
@@ -63,6 +64,14 @@ export default function Product() {
         }
     }
     const handleCreateComment = async (fields: any) => {
+        if (!authenticated) {
+            createAlert('Faça Login com seu perfil para adicionar comentários sobre o produto!', 'info')
+            return
+        }
+        if (ratingValue === 0) {
+            createAlert('Você precisa adicionar estrelas ao seu comentário!', 'info')
+            return
+        }
         const dataFields = {
             ...fields,
             stars: ratingValue
@@ -84,6 +93,10 @@ export default function Product() {
     async function addToCard() {
         setLoadingAddCart(true)
         try {
+            if (!authenticated) {
+                createAlert('Faça Login com seu perfil para adiconar itens ao seu carrinho!', 'info')
+                return
+            }
             await api.post(`/carts/addItemToCart/${user?.cart?.cartId}`, {
                 productSkuId: productId,
                 quantity: quantity
@@ -127,11 +140,12 @@ export default function Product() {
                             <p>{product?.product.productName}</p>
                             {product?.price && <p>R$ {(product?.price / 100).toFixed(2)}</p>}
                             {/* <EvaluationStars /> */}
+
                             <QuantityInput value={quantity} max={product?.stockQuantity} onChange={(value) => {
-                                    if (value !== null) {
-                                        handleQuantityChange(value);
-                                    }
-                                }} />
+                                if (value !== null) {
+                                    handleQuantityChange(value);
+                                }
+                            }} />
                             <BaseButton loading={loadingAddCart} onClick={addToCard}>Adicionar ao Carrinho</BaseButton>
                         </div>
                     </section>
