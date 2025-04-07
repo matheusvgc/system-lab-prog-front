@@ -33,7 +33,9 @@ export default function Header() {
                     <div className="relative w-full flex items-center justify-between gap-4 md:block md:w-auto">
                         {menuOpen ? <FiX onClick={toggleMenu} className="md:hidden z-20" size={30} /> : <FiMenu onClick={toggleMenu} className="md:hidden z-20" size={30} />}
                         <a href="/" className='font-bold text-xl text-center text-nowrap'>TECH SHOP</a>
-                        <a href="/"><FiShoppingCart className="md:hidden" size={28} /></a>
+                        {loading ? <CircularProgress color="inherit" size={30} /> : authenticated && <Stack direction={'row'} gap={1} alignItems={'center'}><div className="md:hidden"><Link to={userType === 'ADMIN' ? '/' : '/customerProfile'}><UserIcon isMobile name={user.username} loading={loading} /></Link></div>{userType !== 'ADMIN' && <a href="/cartPage"><FiShoppingCart className="md:hidden" size={28} /></a>} </Stack>}
+
+
                     </div>
 
                     <div className=" w-full relative">
@@ -66,7 +68,7 @@ export default function Header() {
                                         <li className="py-2 text-black"><Link to="/login">Login</Link></li>
                                         <li className="py-2 text-black"><Link to="/signup">Cadastro</Link></li>
                                     </ul>
-                                </li> : <Stack direction={'row'} alignItems={'center'} gap={5}><Link to="/customerProfile"><UserIcon name={user.username} loading={loading} /></Link>  <button type="button" className="cursor-pointer" onClick={() => handleLogOut()}>Sair</button> </Stack>}
+                                </li> : <Stack direction={'row'} alignItems={'center'} gap={5}> <Link to="/customerProfile"><UserIcon isMobile={false} name={user.username} loading={loading} /></Link> <button type="button" className="cursor-pointer" onClick={() => handleLogOut()}>Sair</button> </Stack>}
                                 {userType !== 'ADMIN' && <li>
                                     <a href="/">Produtos</a>
                                 </li>}
@@ -85,11 +87,10 @@ export default function Header() {
                         fixed top-0 left-0 z-10 bg-black h-dvh w-dvw flex items-center justify-center
                         transition transition-discrete -translate-x-10 duration-150`}>
                         <ul className="text-center font-bold flex flex-col gap-4">
-                            <a href="/"><li>Home</li></a>
-                            <a href="/"><li>Buscar</li></a>
-                            <a href="/"><li>Meus Pedidos</li></a>
-                            <a href="/"><li>Carrinho</li></a>
-                            <a href="/"><li>Entrar</li></a>
+                            <a href="/"><li>{userType === 'ADMIN' ? 'Início' : 'Produtos'}</li></a>
+                            {!authenticated ?
+                                <><a href="/login"><li>Login</li></a><a href="/signup"><li>Cadastre-se</li></a></> :
+                                <>{userType !== 'ADMIN' && <><a href="/customerProfile"><li>Meu Perfil</li></a> <a href="/cartPage"><li>Carrinho</li></a></>} <button type="button" className="cursor-pointer" onClick={() => handleLogOut()}>Sair</button></>}
                         </ul>
                     </nav>
                 </div>

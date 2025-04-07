@@ -101,7 +101,7 @@ export const BaseModal = ({
 										type="submit"
 
 									>
-										{updateForm ? 'Salvar alterações' : 'Adicionar produto'}
+										{updateForm ? 'Salvar alterações' : 'Publicar'}
 									</BaseButton>
 								</Box>
 							</Form>
