@@ -6,10 +6,12 @@ import BaseButton from "@/components/ui/BaseButton";
 import { useAlert } from "@/hooks/useAlert";
 import { getErrorMessage } from "@/utils/errorHandler";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUpPage() {
 
     const { createAlert } = useAlert();
+    const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
 
@@ -51,6 +53,7 @@ export default function SignUpPage() {
                             status: "ENABLED"
                         });
                         createAlert("Usuário cadastrado com sucesso!", "success");
+                        navigate("/home");
                     } catch (err) {
                         createAlert(getErrorMessage(err), "error");
                     } finally {

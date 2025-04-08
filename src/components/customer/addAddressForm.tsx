@@ -55,6 +55,7 @@ export default function AddAddressForm({ userId }: Props) {
                     });
 
                     createAlert("Endereço criado com sucesso!", "success");
+                    window.location.reload();
                 } catch (error) {
                     createAlert(getErrorMessage(error), "error");
                 } finally {

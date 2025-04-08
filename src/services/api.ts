@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-	baseURL: "https://sistema-lab-prog-production.up.railway.app",
+	baseURL: "http://localhost:8080/",
+	// baseURL: "https://sistema-lab-prog-production.up.railway.app",
 });
 
 // api.interceptors.request.use(
