@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { AiOutlineClose, AiTwotoneEdit } from 'react-icons/ai';
 import { BsFillPlusCircleFill } from 'react-icons/bs';
-import { Box, Button, Modal, type ModalProps, Typography } from '@mui/material';
+import { Box, Modal, type ModalProps, Typography } from '@mui/material';
 import { Formik, Form } from 'formik';
 import BaseButton from '../ui/BaseButton';
 

@@ -21,19 +21,19 @@ interface CategoryData {
     categoryDescription: string;
 }
 
-export default function ProductForm ( { onSubmit, initialProduct } : ProductFormProps ) {
+export default function ProductForm({ onSubmit, initialProduct }: ProductFormProps) {
 
     const [categories, setCategories] = useState<CategoryData[]>([]);
-    const [error, setError] = useState<string | null>(null);
 
-    const [ message, setMessage ] = useState<string | null>(null);
-    const [ product, setProduct ] = useState<ProductData>({
+
+    const [message, setMessage] = useState<string | null>(null);
+    const [product, setProduct] = useState<ProductData>({
         productName: "",
         productDescription: "",
         summary: "",
         manufacturer: "",
         brandName: "",
-        category:{categoryId: "", categoryName: "", categoryDescription: ""}
+        category: { categoryId: "", categoryName: "", categoryDescription: "" }
     })
 
     useEffect(() => {
@@ -56,7 +56,7 @@ export default function ProductForm ( { onSubmit, initialProduct } : ProductForm
     }
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-        setProduct({...product, [e.target.name]: e.target.value,});
+        setProduct({ ...product, [e.target.name]: e.target.value, });
     }
 
     function handleCategoryChange(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -67,21 +67,14 @@ export default function ProductForm ( { onSubmit, initialProduct } : ProductForm
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
 
-        if (!product.category) {
-            setError("Selecione uma categoria antes de cadastrar.");
-            return;
-        }
 
-        const response = await onSubmit(product);
-    
-        if (response && response.message) {
-            setMessage(response.message);
-        } else {
-            setMessage("Erro desconhecido.");
-        }
-    
+
+        await onSubmit(product);
+
+
+
         setTimeout(() => setMessage(null), 3000);
-    
+
         if (!initialProduct) {
             setProduct({
                 productName: "",
@@ -89,11 +82,11 @@ export default function ProductForm ( { onSubmit, initialProduct } : ProductForm
                 summary: "",
                 manufacturer: "",
                 brandName: "",
-                category:{categoryId: "",categoryName:"", categoryDescription: ""}
+                category: { categoryId: "", categoryName: "", categoryDescription: "" }
             });
         }
     }
-    
+
 
     return (
         <form className="flex flex-col justify-center items-center gap-2 w-full max-w-7xl px-4 md:px-10" onSubmit={handleSubmit}>
@@ -153,7 +146,7 @@ export default function ProductForm ( { onSubmit, initialProduct } : ProductForm
                     <option key={category.categoryId} value={category.categoryId}>{category.categoryName}</option>
                 ))}
             </select>
-            <button className="w-50 border-2 py-2 px-6 rounded-lg bg-black text-white cursor-pointer">{initialProduct? "Salvar" : "Cadastrar"}</button>
+            <button className="w-50 border-2 py-2 px-6 rounded-lg bg-black text-white cursor-pointer">{initialProduct ? "Salvar" : "Cadastrar"}</button>
 
             {message && (
                 <p className="text-sm mt-2 text-black-700">{message}</p>

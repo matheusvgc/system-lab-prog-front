@@ -53,7 +53,7 @@ export default function QuantityInput({
     defaultValue,
     loading
 }: QuantityInputProps) {
-    
+
     const { createAlert } = useAlert();
 
 
@@ -62,11 +62,12 @@ export default function QuantityInput({
     );
 
     const handleChange = (event: React.SyntheticEvent, newValue: number | null) => {
+        console.log('event', event)
         if (newValue && newValue > max) {
             createAlert("Quantidade não pode exceder o estoque!", "warning");
             return;
         }
-        
+
         if (onChange) {
             onChange(newValue);
         } else {
@@ -76,19 +77,19 @@ export default function QuantityInput({
 
     return (
         <>
-        {!loading ? (
-            <NumberInput
-            aria-label="Quantity Input"
-            min={min}
-            max={max}
-            value={value !== undefined ? value : internalValue}
-            onChange={handleChange}
-            />
-        ) : (
-            <div className="text-center">
-                <CircularProgress size={20} color={'inherit'} />
-            </div>
-        )}
+            {!loading ? (
+                <NumberInput
+                    aria-label="Quantity Input"
+                    min={min}
+                    max={max}
+                    value={value !== undefined ? value : internalValue}
+                    onChange={handleChange}
+                />
+            ) : (
+                <div className="text-center">
+                    <CircularProgress size={20} color={'inherit'} />
+                </div>
+            )}
         </>
     );
 }

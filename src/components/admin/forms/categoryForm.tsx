@@ -14,7 +14,6 @@ interface CategoryFormProps {
 
 export default function CategoryForm({ onSubmit, initialCategory, loading }: CategoryFormProps) {
 
-    const [message, setMessage] = useState<string | null>(null);
     const [category, setCategory] = useState<CategoryData>({
         categoryName: "",
         categoryDescription: "",
@@ -32,16 +31,7 @@ export default function CategoryForm({ onSubmit, initialCategory, loading }: Cat
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        const response = await onSubmit(category);
-
-        if (response && response.message) {
-            setMessage(response.message);
-        } else {
-            setMessage("Erro desconhecido.");
-        }
-
-        setTimeout(() => setMessage(null), 3000);
-
+        await onSubmit(category);
         if (!initialCategory) {
             setCategory({
                 categoryName: "",

@@ -5,7 +5,7 @@ interface UserIconProps {
     isMobile?: boolean; // Propriedade para indicar se é para mobile
 }
 
-const UserIcon: React.FC<UserIconProps> = ({ name, imageUrl, loading, isMobile }) => {
+const UserIcon: React.FC<UserIconProps> = ({ name, imageUrl, isMobile }) => {
     return (
         <div className="flex items-center space-x-2">
             {imageUrl ? (

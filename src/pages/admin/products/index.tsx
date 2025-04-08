@@ -1,11 +1,10 @@
 import Header from "@/components/header"
-import BaseButton from "@/components/ui/BaseButton"
+
 import CardAdminOptions from "@/components/ui/CardAdminOptions";
-import { useNavigate } from "react-router-dom"
+
 
 export default function ManageProducts() {
 
-    const navigate = useNavigate();
 
     return (
         <>
