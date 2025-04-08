@@ -104,7 +104,7 @@ export default function Product() {
             createAlert('Item Inserido com Sucesso', 'success')
         } catch (err: any) {
 
-            createAlert(getErrorMessage(err.response?.data?.message), "error")
+            createAlert(getErrorMessage(err), "error")
             console.error(err);
         } finally {
             setLoadingAddCart(false)

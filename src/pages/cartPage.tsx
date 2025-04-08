@@ -86,8 +86,8 @@ export default function CartPage() {
                 }
             });
             createAlert("Pedido realizado com sucesso!", "success");
+            navigate("/customerProfile");
             clearCart();
-            navigate("/home");
         } catch (error: any) {
             createAlert(error.response?.data?.message, "error");
         } finally {
