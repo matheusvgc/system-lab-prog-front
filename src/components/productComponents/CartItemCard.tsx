@@ -27,7 +27,7 @@ export default function CartItemCard({ cartItem, handleDelete, loadingRemoveCart
                     quantity: value
                 }
             });
-
+            window.location.reload();
         } catch (error) {
             createAlert(getErrorMessage(error), "error");
         } finally {

@@ -12,6 +12,26 @@ import { useState } from "react";
 
 import { FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useMemo } from "react";
+export type CartItem = {
+    cartItemId: string;
+    productSku: {
+        price: number;
+        product: {
+            productId: string;
+            productImage: string;
+            productName: string;
+            productDescription: string;
+            category: any; // ou um tipo mais específico, se tiver
+            reviews: any[]; // ou um tipo mais específico
+        };
+        productSkuId: string;
+        sku: string;
+        stockQuantity: number;
+    };
+    quantity: number;
+};
+
 
 export default function CartPage() {
 
@@ -21,6 +41,15 @@ export default function CartPage() {
     const [orderLoading, setOrderLoading] = useState(false);
     const [loadingRemoveCart, setLoadingRemoveCart] = useState(false);
     const [clearCartLoading, setClearCartLoading] = useState(false);
+    const totalQuantity = useMemo(() => {
+        if (!user?.cart?.cartItems || user.cart.cartItems.length === 0) return 0;
+
+        return user.cart.cartItems.reduce(
+            (total: number, item: CartItem) => total + item.quantity,
+            0
+        );
+    }, [user?.cart?.cartItems]);
+
 
     async function handleDelete(cartItemId: string) {
         setLoadingRemoveCart(true);
@@ -56,10 +85,9 @@ export default function CartPage() {
                     status: "PENDENTE"
                 }
             });
-            window.location.reload();
             createAlert("Pedido realizado com sucesso!", "success");
             clearCart();
-            navigate("/ordersPage");
+            navigate("/home");
         } catch (error: any) {
             createAlert(error.response?.data?.message, "error");
         } finally {
@@ -106,7 +134,7 @@ export default function CartPage() {
                             </table>
                             <div>
                                 <div className="flex flex-col gap-2 items-center">
-                                    <span className="mx-2">{'Subtotal (6 produtos):'} </span>
+                                    <span className="mx-2">{`Subtotal (${totalQuantity || 0} produtos):`} </span>
                                     <div className="flex flex-row gap-2 items-center">
                                         <span className="flex gap-5 ">{`R$ ${formatPrice(user.cart?.total)}`}</span>
 
