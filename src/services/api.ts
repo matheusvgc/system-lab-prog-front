@@ -2,7 +2,7 @@ import axios from "axios";
 
 const api = axios.create({
 	// baseURL: "http://localhost:8080/",
-	baseURL: "https://sistema-lab-prog-production.up.railway.app",
+	baseURL: "https://classy-bublanina-a5784e.netlify.app/",
 });
 
 // api.interceptors.request.use(
